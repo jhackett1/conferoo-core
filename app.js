@@ -12,12 +12,13 @@ var db = mongoose.connect(mongoUrl, {
   useMongoClient: true
 });
 
-// Import routers, injecting models where necessary
-var index = require('./routes/index');
-var events = require('./routes/events');
-
 // Get express app
 var app = express();
+
+// Import routers, injecting models where necessary
+var index = require('./routes/index');
+var auth = require('./routes/auth')(app);
+var events = require('./routes/events')(app);
 
 // Set view engine & dir
 app.set('views', path.join(__dirname, 'views'));
@@ -33,7 +34,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Bind routers to URL paths
 app.use('/', index);
-app.use('/events', events);
+app.use('/api/auth', auth);
+app.use('/api/events', events);
 
 // Catch 404s and forward to error handler
 app.use(function(req, res, next) {

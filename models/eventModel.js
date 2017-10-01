@@ -10,7 +10,9 @@ var eventModel = new Schema({
   duration: {type: Number},
   day: {type: Number},
   time: {type: Number},
-  topics: {type: Array}
+  topics: {type: Array},
+  // Should this be visible on the frontend?
+  published: {type: Boolean, default: false}
 });
 
 module.exports = mongoose.model('Event', eventModel);
