@@ -1,5 +1,4 @@
 var express = require('express');
-var jwt = require('jsonwebtoken');
 // Import model
 var Event = require('../models/eventModel');
 

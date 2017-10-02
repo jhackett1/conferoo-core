@@ -6,6 +6,10 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 
+// Auth modules
+var passport = require('passport');
+var jwt = require('jwt-simple');
+
 // Open database connection
 var mongoUrl = process.env.MONGODB_URI || 'mongodb://localhost:27017/conferoo';
 var db = mongoose.connect(mongoUrl, {
