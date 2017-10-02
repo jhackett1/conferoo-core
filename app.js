@@ -10,7 +10,7 @@ var mongoose = require('mongoose');
 var passport = require('passport');
 var jwt = require('jwt-simple');
 
-// Open database connection
+// Open database connection, with a fallback URI for testing situations
 var mongoUrl = process.env.MONGODB_URI || 'mongodb://localhost:27017/conferoo';
 var db = mongoose.connect(mongoUrl, {
   useMongoClient: true
@@ -19,7 +19,7 @@ var db = mongoose.connect(mongoUrl, {
 // Get express app
 var app = express();
 
-// Import routers, injecting models where necessary
+// Import routers, injecting app object where necessary
 var index = require('./routes/index');
 var auth = require('./routes/auth')(app);
 var events = require('./routes/events')(app);
