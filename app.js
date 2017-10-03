@@ -6,10 +6,6 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 
-// Auth modules
-var passport = require('passport');
-var jwt = require('jwt-simple');
-
 // Open database connection
 var mongoUrl = process.env.MONGODB_URI || 'mongodb://localhost:27017/conferoo';
 var db = mongoose.connect(mongoUrl, {
@@ -21,7 +17,7 @@ var app = express();
 
 // Import routers, injecting models where necessary
 var index = require('./routes/index');
-var auth = require('./routes/auth')(app);
+var users = require('./routes/users')(app);
 var events = require('./routes/events')(app);
 
 // Set view engine & dir
@@ -38,7 +34,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Bind routers to URL paths
 app.use('/', index);
-app.use('/api/auth', auth);
+app.use('/api/users', users);
 app.use('/api/events', events);
 
 // Catch 404s and forward to error handler

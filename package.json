@@ -6,16 +6,16 @@
     "start": "nodemon ./bin/www"
   },
   "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
     "body-parser": "~1.17.1",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.3",
     "ejs": "^2.5.7",
     "express": "~4.15.2",
-    "jwt-simple": "^0.5.1",
     "mongoose": "^4.11.14",
     "morgan": "~1.8.1",
     "passport": "^0.4.0",
-    "passport-jwt": "^3.0.0",
+    "passport-http": "^0.3.0",
     "serve-favicon": "~2.4.2"
   },
   "devDependencies": {
