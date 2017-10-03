@@ -31,6 +31,11 @@ To authenticate and receive a token, make a `GET` request to `/api/auth`, passin
 
 All requests that require authentication must be made over HTTPS.
 
+Slack integration
+================
+
+Conferoo can send notifications to a Slack channel when new content (limited to posts and polls) is published. An incoming webhook URL must be supplied in the config/config.js file.
+
 
 Installation
 ===========

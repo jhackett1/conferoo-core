@@ -15,7 +15,7 @@ var db = mongoose.connect(mongoUrl, {
 // Get express app
 var app = express();
 
-// Import routers, injecting models where necessary
+// Import routers, injecting app object where necessary
 var index = require('./routes/index');
 var users = require('./routes/users')(app);
 var events = require('./routes/events')(app);
