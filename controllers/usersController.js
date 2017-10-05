@@ -7,18 +7,20 @@ var userController = function(User){
     })
   }
 
+  // REGISTER
   // Add new user to the database
   var post = function(req, res){
+
+    console.log('testing')
+
     var newUser = new User({
       username: req.body.username,
       password: req.body.password
     });
 
-    console.log(newUser)
-
     newUser.save(function(err, user) {
       if (err) res.send(err);
-      res.json({
+      res.status(200).json({
         message: 'New user added',
         user: user
       });

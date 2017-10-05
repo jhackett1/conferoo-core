@@ -10,7 +10,8 @@ var routes = function(app){
   router.route('/')
     //GET a list of all events
     .get(userController.get)
-    //POST a new event to the database
+
+  router.route('/register')
     .post(userController.post)
 
 
