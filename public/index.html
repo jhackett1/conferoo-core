@@ -1,0 +1,48 @@
+<button onclick="login()">Log in with Google</button>
+
+<h4>Response:</h4>
+<div></div>
+
+
+
+<script>
+  // Client ID and oauth URL
+  const clientId = "826165205387-b4u0mtq8diena38nabgqrd667kefjnfr.apps.googleusercontent.com";
+
+  // Make the initial Google login
+  function login(){
+    var urlBuilder = [];
+    urlBuilder.push('response_type=code', `client_id=${clientId}`, `redirect_uri=${window.location.origin}`, 'scope=profile email');
+    const url = "https://accounts.google.com/o/oauth2/v2/auth?" + urlBuilder.join('&');
+    // Open the popup window
+    window.location.href = url;
+  }
+
+  // Check whether we have an access code (i.e. have we been redirected back from google succcessfully?)
+  if(window.location.search.substring(1)){
+    // Process the auth code
+    var params = window.location.search.substring(1);
+    var pair = params.split('=');
+    var code = decodeURIComponent(pair[1]);
+    // Send the code onto the backend server
+    postAccessCode(code);
+  }
+
+  // Now send the auth code to the server via HTTP post
+  function postAccessCode(code){
+    var postData = code;
+    var request = new XMLHttpRequest();
+    request.onload = function(){
+      var status = request.status;
+      var data = request.responseText;
+      document.querySelector('div').innerHTML = data;
+    }
+    request.open('POST', 'http://localhost:3000/api/authenticate');
+    request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    request.send(JSON.stringify({
+      code: postData,
+      redirectUri: window.location.origin,
+      clientId: clientId
+    }));
+  }
+</script>

@@ -1,36 +1,23 @@
 var userController = function(User){
 
-  var get = function(req, res){
+  // LIST EXISTING USERS
+  // GET a list of all existing users
+  var list = function(req, res){
     User.find(function(err, users){
-      if (err) res.send(err);
-      res.json(users);
+      if (err) console.log(err);
+      // Only return particular fields through the API, not including the password hash
+      res.status(200).json(users.map(function(user){
+        return {
+          id: user._id,
+          username: user.username
+        }
+      }))
     })
   }
 
-  // REGISTER
-  // Add new user to the database
-  var post = function(req, res){
-
-    console.log('testing')
-
-    var newUser = new User({
-      username: req.body.username,
-      password: req.body.password
-    });
-
-    newUser.save(function(err, user) {
-      if (err) res.send(err);
-      res.status(200).json({
-        message: 'New user added',
-        user: user
-      });
-    });
-
-  }
-
+  // Expose methods
   return {
-    post: post,
-    get: get
+    list: list
   }
 
 }

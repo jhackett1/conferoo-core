@@ -5,13 +5,14 @@ var User = require('../models/userModel');
 var routes = function(app){
 
   var router = express.Router();
-  var userController = require('../controllers/usersController')(User);
+  var authController = require('../controllers/authController')(User);
 
   router.route('/')
-    // LIST EXISTING USERS
-    // GET a list of all existing users
-    .get(userController.list)
-    
+    // LOG IN EXISTING USER
+    // POST new user to the database
+    .post(authController.authenticate)
+
+
   return router;
 }
 

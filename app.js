@@ -5,9 +5,10 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
-var jwt = require('jwt-simple');
+var promise = require('bluebird');
 
 // Open database connection
+mongoose.Promise = promise;
 var mongoUrl = process.env.MONGODB_URI || 'mongodb://localhost:27017/conferoo';
 var db = mongoose.connect(mongoUrl, {
   useMongoClient: true
@@ -20,6 +21,7 @@ var app = express();
 var index = require('./routes/index');
 var users = require('./routes/users')(app);
 var events = require('./routes/events')(app);
+var auth = require('./routes/auth')(app);
 
 // Set view engine & dir
 app.set('views', path.join(__dirname, 'views'));
@@ -37,22 +39,23 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 app.use('/api/users', users);
 app.use('/api/events', events);
+app.use('/api/authenticate', auth);
 
 // Catch 404s and forward to error handler
-app.use(function(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
-});
+// app.use(function(req, res, next) {
+//   var err = new Error('Not Found');
+//   err.status = 404;
+//   next(err);
+// });
 
-// Recieve and handle 404s
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-  // Render error page
-  res.status(err.status || 500);
-  res.render('error');
-});
+// // Recieve and handle 404s
+// app.use(function(err, req, res, next) {
+//   // set locals, only providing error in development
+//   res.locals.message = err.message;
+//   res.locals.error = req.app.get('env') === 'development' ? err : {};
+//   // Render error page
+//   res.status(err.status || 500);
+//   res.render('error');
+// });
 
 module.exports = app;
