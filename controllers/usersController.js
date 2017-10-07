@@ -5,11 +5,12 @@ var userController = function(User){
   var list = function(req, res){
     User.find(function(err, users){
       if (err) console.log(err);
-      // Only return particular fields through the API, not including the password hash
+      // Only return particular fields through the API, not the user's admin role
       res.status(200).json(users.map(function(user){
         return {
           id: user._id,
-          username: user.username
+          email: user.email,
+          displayname: user.displayName
         }
       }))
     })

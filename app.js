@@ -1,3 +1,4 @@
+
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -41,21 +42,5 @@ app.use('/api/users', users);
 app.use('/api/events', events);
 app.use('/api/authenticate', auth);
 
-// Catch 404s and forward to error handler
-// app.use(function(req, res, next) {
-//   var err = new Error('Not Found');
-//   err.status = 404;
-//   next(err);
-// });
-
-// // Recieve and handle 404s
-// app.use(function(err, req, res, next) {
-//   // set locals, only providing error in development
-//   res.locals.message = err.message;
-//   res.locals.error = req.app.get('env') === 'development' ? err : {};
-//   // Render error page
-//   res.status(err.status || 500);
-//   res.render('error');
-// });
-
+// Allow other files to import the app object
 module.exports = app;

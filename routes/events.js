@@ -1,6 +1,7 @@
 var express = require('express');
 // Import model
 var Event = require('../models/eventModel');
+var authoriser = require('../services/authoriser.js');
 
 var routes = function(app){
 
@@ -8,7 +9,7 @@ var routes = function(app){
   var eventController = require('../controllers/eventsController')(Event);
 
 
-  router.route('/')
+  router.use(authoriser).route('/')
     //GET a list of all events
     .get(eventController.get)
     //POST a new event to the database
