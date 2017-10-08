@@ -1,8 +1,15 @@
+<h1>Conferoo x Google Authenticator</h1>
+<p>This is a barebones client which interfaces with the Conferoo API. It takes a user (that's you!) through the Google Oauth flow. You'll recieve a token from the server, which will appear below.</p>
+
+<p>You can then use the token from the below response and use it to test further API calls using a tool like Postman.</p>
+
 <button onclick="login()">Log in with Google</button>
 
 <h4>Response:</h4>
-<div></div>
+<pre><span style="max-width: 100%; padding: 10px; background-color: #fafafa;"></span></pre>
 
+<h4>Your token</h4>
+<pre><div style="max-width: 100%; padding: 10px; background-color: #fafafa;"></div></pre>
 
 
 <script>
@@ -35,7 +42,8 @@
     request.onload = function(){
       var status = request.status;
       var data = request.responseText;
-      document.querySelector('div').innerHTML = data;
+      document.querySelector('span').innerHTML = data;
+      document.querySelector('div').innerHTML = JSON.parse(data).token;
     }
     request.open('POST', 'http://localhost:3000/api/authenticate');
     request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");

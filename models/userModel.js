@@ -10,7 +10,15 @@ var userModel = new Schema({
     type: Boolean,
     required: true,
     default: false
-  }
+  },
+  // Which conference is this person attending? They can update this manually
+  attending: {
+    type: String,
+    required: true,
+    default: '0'
+  },
+  // Keep track of the user's personal schedule for the conference in an object
+  schedule: {type: Object}
 });
 
 

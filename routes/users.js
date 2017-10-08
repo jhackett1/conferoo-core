@@ -1,17 +1,23 @@
 var express = require('express');
 // Import model
 var User = require('../models/userModel');
-var authoriser = require('../services/authoriser.js');
+var authorise = require('../services/authoriser.js');
 
 var routes = function(app){
 
   var router = express.Router();
   var userController = require('../controllers/usersController')(User);
 
-  router.use(authoriser).route('/')
+  router.route('/')
       // LIST EXISTING USERS
       // GET a list of all existing users
-      .get(userController.list)
+      .get(authorise.basic, userController.getList)
+
+  router.route('/:id')
+      // GET a list of all existing users
+      .get(authorise.basic, userController.getSingle)
+      // PATCH an existing user with updated info
+      .patch(authorise.userProfile, userController.patchSingle)
 
   return router;
 }

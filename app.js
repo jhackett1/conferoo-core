@@ -19,7 +19,6 @@ var db = mongoose.connect(mongoUrl, {
 var app = express();
 
 // Import routers, injecting app object where necessary
-var index = require('./routes/index');
 var users = require('./routes/users')(app);
 var events = require('./routes/events')(app);
 var auth = require('./routes/auth')(app);
@@ -29,7 +28,6 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 // Middleware
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -37,10 +35,18 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Bind routers to URL paths
-app.use('/', index);
 app.use('/api/users', users);
 app.use('/api/events', events);
 app.use('/api/authenticate', auth);
+
+// Error handling middleware
+app.use(function(err, req, res, next){
+  console.log(err);
+  res.status(422).json({
+    success: false,
+    error: err.message
+  })
+})
 
 // Allow other files to import the app object
 module.exports = app;

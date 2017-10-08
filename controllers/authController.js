@@ -7,11 +7,12 @@ var authController = function(User){
   // Create a JWT and send it as a response
   function createSendToken(user, req, res){
     // Create an expiration date two days from now
-    var expires = moment().add('minutes', 2).valueOf();
+    var expires = moment().add('days', 2).valueOf();
     // Process the claims of the token, with an expiration date
     var payload = {
       iss: req.hostname,
       sub: user.id,
+      admin: user.admin,
       exp: expires
     }
     // Encode the token, signing it with the secret
@@ -24,7 +25,7 @@ var authController = function(User){
   }
 
   // Move through the Google Oauth flow
-  var authenticate = function(req, res){
+  var authenticate = function(req, res, next){
 
       var url = 'https://accounts.google.com/o/oauth2/token'
       var params = {
@@ -40,6 +41,7 @@ var authController = function(User){
         json: true,
         form: params
       }, function(err, response, token){
+        if(err){return next(err)};
         // Once we have the token, make a further request for user profile info
         var accessToken = token.access_token;
         var headers = {
@@ -51,21 +53,25 @@ var authController = function(User){
           json: true,
           headers: headers
         }, function(err, response, profile){
+          if(err){return next(err)};
 
-          // Check that the user is authenticating from the correct G Suite org or a subdomain
-          var whitelistedDomain = "faststream.civilservice.gov.uk";
-          if(!profile.domain.endsWith(whitelistedDomain)){
-            return res.status(401).json({message: `You must sign in with a @${whitelistedDomain} account`})
-          }
 
           // Let's check whether we have an existing user with this profile info
           User.findOne({
             googleId: profile.id
           }, function(err, foundUser){
+            if(err){return next(err)};
             // Does the user exist? If so, send a JWT to the client
             if(foundUser){
               return createSendToken(foundUser, req, res);
             }
+
+            // Check that the user is authenticating from the correct G Suite org or a subdomain
+            var whitelistedDomain = "faststream.civilservice.gov.uk";
+            if(!profile.domain || !profile.domain.endsWith(whitelistedDomain)){
+              return res.status(401).json({message: `You must sign in with a @${whitelistedDomain} account`})
+            }
+
             // If not, save the new user, then send a JWT to the client
             var newUser = new User({
               googleId: profile.id,
@@ -73,7 +79,7 @@ var authController = function(User){
               email: profile.emails[0].value
             });
             newUser.save(function(err, user){
-              if(err) return console.log(err);
+              if(err){return next(err)};
               return createSendToken(user, req, res)
             })
           })
