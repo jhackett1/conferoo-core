@@ -15,6 +15,7 @@ Conferoo exposes a RESTful API with the following endpoints:
 * `GET /api/posts` shows a list of the blog posts made about the conference
 * `GET /api/polls` shows a list of the live polls being made at the conference
 
+
 A single item can be fetched by id from each endpoint. For example:
 
 * `GET /api/events/9999999` will show only the event with an id of 9999999
@@ -30,12 +31,12 @@ Finally, endpoints are sortable via the `sort` query parameter:
 
 * `GET /api/events?sort=time&order=asc` will list events in time order
 
-File uploads
+Image uploads
 -----------
 
-Conferoo is, partly, a content management system, accepting file uploads. All uploads must be authorised via an admin token, and can be made as a multipart/form-data POST request.
+Conferoo is, partly, a content management system, accepting image uploads. All uploads must be authorised via a user token (not necessarily admin), and can be made as a multipart/form-data POST request to `POST /api/media`.
 
-* `POST /api/upload` shows a list of all events in the schedule
+Conferoo will save the upload, process a 150x150px preview image and save an entry to the database.
 
 Authentication
 -------------
