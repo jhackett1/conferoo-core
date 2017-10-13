@@ -1,4 +1,5 @@
-// USE THIS MODULE TO PROTECT AN API ROUTE FROM UNAUTHENTICATED USERS
+// Protect API routes using these methods
+// This is authorisation, NOT user authentication
 
 var jwt = require('jwt-simple');
 

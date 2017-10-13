@@ -24,7 +24,7 @@ var eventController = function(Event){
       query.speaker = req.query.speaker;
     }
     // Make DB query
-    Event.find(query, function(err, events, next){
+    Event.find(query).exec( function(err, events, next){
       if(err){return next(err)};
       var events = events.map(function(event){
         // Add on an internal link

@@ -14,7 +14,7 @@ var routes = function(app){
       .get(authorise.basic, userController.getList)
 
   router.route('/:id')
-      // GET a list of all existing users
+      // GET a list of one existing user
       .get(authorise.basic, userController.getSingle)
       // PATCH an existing user with updated info
       .patch(authorise.userProfile, userController.patchSingle)

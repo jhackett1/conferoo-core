@@ -40,7 +40,9 @@ Conferoo is, partly, a content management system, accepting file uploads. All up
 Authentication
 -------------
 
-All API endpoints also accept `POST`, `PUT`, `PATCH` and `DELETE` requests, but require authentication.
+**Authentication not working?** Did you remember to 'source app.env'?
+
+All API endpoints also accept `POST`, `PATCH` and `DELETE` requests, but require authentication.
 
 Conferoo works with Google's OAuth2 flow to identify a user and populate its local user table with profile info from Google. Users with a `@faststream.civilservice.gov.uk` email address can sign up/in hassle-free.
 

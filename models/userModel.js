@@ -18,8 +18,14 @@ var userModel = new Schema({
     default: '0'
   },
   // Keep track of the user's personal schedule for the conference in an object
-  schedule: {type: Object}
-});
+  schedule: {
+    type: Object,
+    default: null
+  },
+  joinedAt: {type: Object,
+    required: true
+  }
+}, { versionKey: false });
 
 
 module.exports = mongoose.model('User', userModel);

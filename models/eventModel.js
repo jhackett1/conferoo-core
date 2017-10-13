@@ -5,6 +5,7 @@ var mongoose = require('mongoose'),
 var eventModel = new Schema({
   title: {type: String, required: true},
   speaker: {type: String, default: null},
+  image: {type: String, default: null},
   shortDescription: {type: String, required: true},
   longDescription: {type: String, default: null},
   duration: {type: Number, required: true},
@@ -17,6 +18,6 @@ var eventModel = new Schema({
     required: true,
     default: false
   }
-});
+}, { versionKey: false });
 
 module.exports = mongoose.model('Event', eventModel);

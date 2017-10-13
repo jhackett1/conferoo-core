@@ -19,7 +19,9 @@ var authController = function(User){
     var token = jwt.encode(payload, process.env.JWT_SECRET);
     // Send the token to the client
     res.status(200).json({
-      user: user,
+      _id: user._id,
+      displayname: user.displayName,
+      email: user.email,
       token: token
     })
   }
@@ -55,7 +57,6 @@ var authController = function(User){
         }, function(err, response, profile){
           if(err){return next(err)};
 
-
           // Let's check whether we have an existing user with this profile info
           User.findOne({
             googleId: profile.id
@@ -76,7 +77,8 @@ var authController = function(User){
             var newUser = new User({
               googleId: profile.id,
               displayName: profile.displayName,
-              email: profile.emails[0].value
+              email: profile.emails[0].value,
+              joinedAt: new Date()
             });
             newUser.save(function(err, user){
               if(err){return next(err)};

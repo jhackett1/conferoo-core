@@ -7,6 +7,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var promise = require('bluebird');
+var fileUpload = require('express-fileupload');
 
 // Open database connection
 mongoose.Promise = promise;
@@ -22,6 +23,7 @@ var app = express();
 var users = require('./routes/users')(app);
 var events = require('./routes/events')(app);
 var auth = require('./routes/auth')(app);
+var media = require('./routes/media')(app);
 
 // Set view engine & dir
 app.set('views', path.join(__dirname, 'views'));
@@ -33,11 +35,14 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+// Set up the file upload middleware and limit uploads to 1 MB
+app.use(fileUpload());
 
 // Bind routers to URL paths
 app.use('/api/users', users);
 app.use('/api/events', events);
 app.use('/api/authenticate', auth);
+app.use('/api/media', media);
 
 // Error handling middleware
 app.use(function(err, req, res, next){
