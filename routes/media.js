@@ -12,7 +12,7 @@ var routes = function(app){
 
   router.route('/')
     //POST a new media upload to the database
-    .post(authorise.basic, mediaController.post)
+    .post(mediaController.post)
 
   return router;
 }
