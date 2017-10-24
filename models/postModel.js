@@ -5,7 +5,7 @@ var mongoose = require('mongoose'),
 var postModel = new Schema({
   title: {type: String, required: true},
   image: {type: String, default: null},
-  shortDescription: {type: String, required: true},
+  teaser: {type: String, required: true},
   content: {type: String, default: null},
   author: {type: String, required: true},
   // Should this be visible on the frontend?

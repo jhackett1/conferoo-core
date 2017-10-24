@@ -6,11 +6,10 @@ var eventModel = new Schema({
   title: {type: String, required: true},
   speaker: {type: String, default: null},
   image: {type: String, default: null},
-  shortDescription: {type: String, required: true},
-  longDescription: {type: String, default: null},
+  teaser: {type: String, required: true},
+  content: {type: String, default: null},
   duration: {type: Number, required: true},
-  day: {type: String, required: true},
-  time: {type: Number, required: true},
+  date: {type: Object, required: true},
   topics: {type: Array, default: []},
   // Should this be visible on the frontend?
   published: {

@@ -14,11 +14,8 @@ var eventController = function(Event){
     // Blank query
     var query = {};
     // Make the list queryable by day, time and speaker
-    if (req.query.day) {
+    if (req.query.date) {
       query.day = req.query.day;
-    }
-    if (req.query.time) {
-      query.time = req.query.time;
     }
     if (req.query.speaker) {
       query.speaker = req.query.speaker;

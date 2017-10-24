@@ -10,7 +10,7 @@ var routes = function(app){
 
   router.route('/')
     //GET a list of all events
-    .get(authorise.basic, eventController.getList)
+    .get(eventController.getList)
     //POST a new event to the database
     .post(authorise.admin, eventController.post)
 

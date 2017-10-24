@@ -8,6 +8,8 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var promise = require('bluebird');
 var fileUpload = require('express-fileupload');
+var cors = require('cors')
+
 
 // Open database connection
 mongoose.Promise = promise;
@@ -31,6 +33,7 @@ app.set('view engine', 'ejs');
 
 // Middleware
 app.use(logger('dev'));
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());

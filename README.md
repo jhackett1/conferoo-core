@@ -68,4 +68,6 @@ You also need a MongoDB database up and running.
 
 The Google user authentication flow requires a project to be set up via the Google Developer Console, with the G+ API turned on. A client ID and secret are needed.
 
+Create an empty directory `uploads` inside `public`, and then create another called `previews` inside `uploads`.
+
 Run the commands `npm install` and then `npm start`. The API will be available by default on port 3000.
