@@ -6,25 +6,18 @@ var userModel = new Schema({
   email: String,
   googleId: String,
   displayName: String,
+  image: String,
   admin: {
     type: Boolean,
     required: true,
     default: false
   },
-  // Which conference is this person attending? They can update this manually
-  attending: {
-    type: String,
-    required: true,
-    default: '0'
-  },
+  // Which programme is this person attending? They can update this manually
+  programme: { type: String, default: '0'},
   // Keep track of the user's personal schedule for the conference in an object
-  schedule: {
-    type: Object,
-    default: null
-  },
-  joinedAt: {type: Object,
-    required: true
-  }
+  schedule: {type: Object, default: null },
+  // Bool keeping track of whether user has seen onboarding content
+  onboarded: {type: Boolean, default: false }
 }, { versionKey: false });
 
 

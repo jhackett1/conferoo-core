@@ -24,6 +24,7 @@ var app = express();
 // Import routers, injecting app object where necessary
 var users = require('./routes/users')(app);
 var events = require('./routes/events')(app);
+var speakers = require('./routes/speakers')(app);
 var auth = require('./routes/auth')(app);
 var media = require('./routes/media')(app);
 
@@ -44,6 +45,7 @@ app.use(fileUpload());
 // Bind routers to URL paths
 app.use('/api/users', users);
 app.use('/api/events', events);
+app.use('/api/speakers', speakers);
 app.use('/api/authenticate', auth);
 app.use('/api/media', media);
 

@@ -22,6 +22,7 @@ var authController = function(User){
       _id: user._id,
       displayname: user.displayName,
       email: user.email,
+      image: user.image,
       token: token
     })
   }
@@ -51,12 +52,17 @@ var authController = function(User){
         };
         var apiUrl = 'https://www.googleapis.com/plus/v1/people/me';
 
+        console.log(response.body.error)
+
+        if(response.body.error){
+          return res.status(401).json({message: "Something went wrong. Please try again. " + response.body.error_description})
+        }
+
         request.get(apiUrl, {
           json: true,
           headers: headers
         }, function(err, response, profile){
           if(err){return next(err)};
-
           // Let's check whether we have an existing user with this profile info
           User.findOne({
             googleId: profile.id
@@ -69,16 +75,16 @@ var authController = function(User){
 
             // Check that the user is authenticating from the correct G Suite org or a subdomain
             var whitelistedDomain = "faststream.civilservice.gov.uk";
-            if(!profile.domain || !profile.domain.endsWith(whitelistedDomain)){
-              return res.status(401).json({message: `You must sign in with a @${whitelistedDomain} account`})
-            }
+            // if(!profile.domain || !profile.domain.endsWith(whitelistedDomain)){
+            //   return res.status(401).json({message: `You must sign in with a @${whitelistedDomain} account`})
+            // }
 
             // If not, save the new user, then send a JWT to the client
             var newUser = new User({
               googleId: profile.id,
               displayName: profile.displayName,
               email: profile.emails[0].value,
-              joinedAt: new Date()
+              image: profile.image.url
             });
             newUser.save(function(err, user){
               if(err){return next(err)};

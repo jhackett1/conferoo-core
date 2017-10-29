@@ -11,6 +11,7 @@ var routes = function(app){
   var mediaController = require('../controllers/mediaController')(Media);
 
   router.route('/')
+    .get(mediaController.get)
     //POST a new media upload to the database
     .post(mediaController.post)
 

@@ -4,18 +4,24 @@ var mongoose = require('mongoose'),
 // Schema for each event stored in the database
 var eventModel = new Schema({
   title: {type: String, required: true},
+  // Store ID of speaker
   speaker: {type: String, default: null},
+  // Stores URL string
   image: {type: String, default: null},
   teaser: {type: String, required: true},
   content: {type: String, default: null},
+  // Number of minutes
   duration: {type: Number, required: true},
-  date: {type: Object, required: true},
-  topics: {type: Array, default: []},
-  // Should this be visible on the frontend?
+  // Store time as string HHMM
+  time: {type: Number, required: true},
+  programme: {type: String, required: true},
+  // Array of strings
+  themes: {type: Array, default: []},
+  // Bool for frontend visibility
   published: {
     type: Boolean,
     required: true,
-    default: false
+    default: true
   }
 }, { versionKey: false });
 

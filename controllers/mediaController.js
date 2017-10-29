@@ -58,8 +58,17 @@ var mediaController = function(Media){
     });
   }
 
+  var get = function(req, res, next){
+    Media.find().exec( function(err, events, next){
+      if(err){return next(err)};
+      // Send the results
+      res.status(200).json(events);
+    })
+  }
+
   // Expose public methods
   return {
+    get: get,
     post: post
   }
 }
