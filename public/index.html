@@ -1,59 +1,15 @@
-<h1>Conferoo x Google Authenticator</h1>
-<p>This is a barebones client which interfaces with the Conferoo API. It takes a user (that's you!) through the Google Oauth flow. You'll recieve a token from the server, which will appear below.</p>
+<style>
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  text-align: center;
+}
 
-<p>You can then use the token from the below response and use it to test further API calls using a tool like Postman.</p>
+a {
+  color: #00B7FF;
+}
 
-<h2>File uploads</h2>
-You can test file upload functionality <a href="/upload.html">here</a>.
+</style>
 
-<button onclick="login()">Log in with Google</button>
-
-<h4>Response:</h4>
-<pre><span style="max-width: 100%; padding: 10px; background-color: #fafafa;"></span></pre>
-
-<h4>Your token</h4>
-<pre><div style="max-width: 100%; padding: 10px; background-color: #fafafa;"></div></pre>
-
-
-<script>
-  // Client ID and oauth URL
-  const clientId = "826165205387-b4u0mtq8diena38nabgqrd667kefjnfr.apps.googleusercontent.com";
-
-  // Make the initial Google login
-  function login(){
-    var urlBuilder = [];
-    urlBuilder.push('response_type=code', `client_id=${clientId}`, `redirect_uri=${window.location.origin}`, 'scope=profile email');
-    const url = "https://accounts.google.com/o/oauth2/v2/auth?" + urlBuilder.join('&');
-    // Open the popup window
-    window.location.href = url;
-  }
-
-  // Check whether we have an access code (i.e. have we been redirected back from google succcessfully?)
-  if(window.location.search.substring(1)){
-    // Process the auth code
-    var params = window.location.search.substring(1);
-    var pair = params.split('=');
-    var code = decodeURIComponent(pair[1]);
-    // Send the code onto the backend server
-    postAccessCode(code);
-  }
-
-  // Now send the auth code to the server via HTTP post
-  function postAccessCode(code){
-    var postData = code;
-    var request = new XMLHttpRequest();
-    request.onload = function(){
-      var status = request.status;
-      var data = request.responseText;
-      document.querySelector('span').innerHTML = data;
-      document.querySelector('div').innerHTML = JSON.parse(data).token;
-    }
-    request.open('POST', 'http://localhost:3000/api/authenticate');
-    request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    request.send(JSON.stringify({
-      code: postData,
-      redirectUri: window.location.origin,
-      clientId: clientId
-    }));
-  }
-</script>
+<h1>You've reached a Conferoo server.</h1>
+<p>There's nothing you can do here. Try accessing a Conferoo Publisher instance or front-end app.</p>
