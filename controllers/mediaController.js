@@ -1,4 +1,6 @@
 var sharp = require('sharp');
+var fs = require('fs');
+const sortBy = require('sort-array');
 
 var mediaController = function(Media){
 
@@ -20,27 +22,32 @@ var mediaController = function(Media){
   var buildPreview = function(filename, originalImagePath, cb){
     let previewPath = `./public/uploads/previews/${filename}`;
     sharp(originalImagePath).resize(150, 150).toFile(previewPath, function(err, info){
-      if(err) return console.log(err);
-      // Trigger the callback function, passing in the path generated
-      cb(previewPath);
+      if(err){return cb(err, null);
+      } else {
+        cb(null, previewPath);
+      }
     });
   }
 
   // Recieve file uploads, saving them on the server and making a database record
   var post = function(req, res, next){
-    // If there are no files, say so
-    if (!req.files) return res.status(400).json({message: "No files were attached"});
+    // If there are no files, pass an error
+    if (!req.files) return next(new Error("No files were attached."));
     // Get the file
     let upload = req.files.upload;
+    // Only allow specified filetypes
+    var match = ['image/jpg','image/gif','image/jpeg','image/png'].includes(upload.mimetype);
+    if (!match) return next(new Error("That file type is not supported."));
     // Build a filename for the upload, based on the date
     let now = new Date();
     let filename = buildFilename(upload.name);
     let path = `./public/uploads/${filename}`;
     // Place the file on the server
     upload.mv(path, function(err) {
-      if (err) return res.status(500).json({message: err});
+      if (err) return next(err);
       // Create preview
-      buildPreview(filename, path, function(previewPath){
+      buildPreview(filename, path, function(err, previewPath){
+        if (err) return next(new Error("Can't create preview. File not compatible."));
         // Add a record in the database
         var newMedia = new Media({
           sources: {
@@ -59,17 +66,41 @@ var mediaController = function(Media){
   }
 
   var get = function(req, res, next){
-    Media.find().exec( function(err, events, next){
+    Media.find().sort({uploadedAt: -1}).exec( function(err, events, next){
       if(err){return next(err)};
       // Send the results
       res.status(200).json(events);
     })
   }
 
+  var deleteSingle = function(req, res, next){
+    Media.findById(req.params.id, function(err, media){
+      if(err){return next(err)};
+      // Get paths to delete files
+      var fullPath = "./public/uploads/" + media.sources.full.split("uploads/").pop();
+      var previewPath = "./public/uploads/previews/" + media.sources.full.split("uploads/").pop();
+      // Now delete DB record
+      media.remove(function(err){
+        if(err){return next(err)} else {
+        // And delete the files too
+        fs.unlink(fullPath, function(err){
+          if(err){return next(err)}
+          fs.unlink(previewPath, function(err){
+            if(err){return next(err)}
+            // Thanks user, we're done here
+            res.status(200).json({message: "Media deleted successfully."});
+          })
+        })
+        }
+      })
+    })
+  }
+
   // Expose public methods
   return {
     get: get,
-    post: post
+    post: post,
+    delete: deleteSingle
   }
 }
 

@@ -15,6 +15,10 @@ var routes = function(app){
     //POST a new media upload to the database
     .post(mediaController.post)
 
+  router.route('/:id')
+    // DELETE an upload by ID
+    .delete(mediaController.delete)
+
   return router;
 }
 

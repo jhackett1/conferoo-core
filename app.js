@@ -25,6 +25,7 @@ var app = express();
 var users = require('./routes/users')(app);
 var events = require('./routes/events')(app);
 var speakers = require('./routes/speakers')(app);
+var posts = require('./routes/posts')(app);
 var auth = require('./routes/auth')(app);
 var media = require('./routes/media')(app);
 
@@ -46,16 +47,21 @@ app.use(fileUpload());
 app.use('/api/users', users);
 app.use('/api/events', events);
 app.use('/api/speakers', speakers);
+app.use('/api/posts', posts);
 app.use('/api/authenticate', auth);
 app.use('/api/media', media);
 
 // Error handling middleware
 app.use(function(err, req, res, next){
+  console.log("ERROR HANDLER TRIGGERED ==============")
+  // Log error internally
   console.log(err);
-  res.status(422).json({
-    success: false,
-    error: err.message
-  })
+  // Send the error to the user
+  res.status(err.statusCode || 500).json({
+
+    "success": false,
+    "message": err.message
+  });
 })
 
 // Allow other files to import the app object

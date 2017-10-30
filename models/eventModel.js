@@ -13,15 +13,16 @@ var eventModel = new Schema({
   // Number of minutes
   duration: {type: Number, required: true},
   // Store time as string HHMM
-  time: {type: Number, required: true},
+  time: {type: String, required: true},
   programme: {type: String, required: true},
+  venue: {type: String, default: false},
   // Array of strings
   themes: {type: Array, default: []},
-  // Bool for frontend visibility
+  // String for frontend visibility
   published: {
-    type: Boolean,
+    type: String,
     required: true,
-    default: true
+    default: 'public'
   }
 }, { versionKey: false });
 

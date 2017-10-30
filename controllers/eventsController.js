@@ -21,16 +21,8 @@ var eventController = function(Event){
       query.speaker = req.query.speaker;
     }
     // Make DB query
-    Event.find(query).exec( function(err, events, next){
+    Event.find(query).sort({title: 1}).exec( function(err, events, next){
       if(err){return next(err)};
-      var events = events.map(function(event){
-        // Add on an internal link
-
-        // TODO Work out why this isn't being passed into the response
-
-        event.detail = req.protocol + "://" + req.get('host') + req.originalUrl + "/" + event.id;
-        return event;
-      })
       // Sort the results by whichever query parameter is passed in
       if(req.query.sort){
         sortBy(events, req.query.sort);

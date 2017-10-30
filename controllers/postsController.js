@@ -1,55 +1,53 @@
 const sortBy = require('sort-array');
 
-var speakerController = function(Speaker){
+var postController = function(Post){
 
   var post = function(req, res, next){
-    var newSpeaker = new Speaker(req.body);
-    newSpeaker.save(function(err, newSpeaker){
-      console.log("======================================",err);
+    var newPost = new Post(req.body);
+    newPost.save(function(err, newPost){
       if(err){return next(err)};
-
-      res.status(201).send(newSpeaker);
+      res.status(201).send(newPost);
     });
   }
 
   var getList = function(req, res){
     // Blank query
     var query = {};
-    // Make the list queryable by day, time and speaker
+    // Make the list queryable by day, time and post
     // Make DB query
-    Speaker.find(query).sort({name: 1}).exec( function(err, speakers, next){
+    Post.find(query).sort({createdAt: -1}).exec( function(err, posts, next){
       if(err){return next(err)};
       // Send the results
-      res.status(200).json(speakers);
+      res.status(200).json(posts);
     })
   }
 
   var getSingle = function(req, res, next){
-    Speaker.findById(req.params.id, function(err, speaker){
+    Post.findById(req.params.id, function(err, post){
       if(err){return next(err)};
-      res.json(speaker);
+      res.json(post);
     })
   }
 
   var deleteSingle = function(req, res, next){
-    Speaker.findById(req.params.id).remove(function(err){
+    Post.findById(req.params.id).remove(function(err){
       if(err){return next(err)} else {
-      res.status(200).json({message: "That speaker has been successfully deleted"});
+      res.status(200).json({message: "That post has been successfully deleted"});
       }
     })
   }
 
   var patchSingle = function(req, res, next){
-    Speaker.findById(req.params.id, function(err, speaker){
+    Post.findById(req.params.id, function(err, post){
       if(err){return next(err)};
       // Pull in any body keys that are present, and update the document
       for(var p in req.body){
-        speaker[p] = req.body[p];
+        post[p] = req.body[p];
       }
       //Save the document
-      speaker.save(function(err, updatedSpeaker){
+      post.save(function(err, updatedPost){
         if(err){return next(err)};
-        res.status(201).send(updatedSpeaker);
+        res.status(201).send(updatedPost);
       });
     })
   }
@@ -65,4 +63,4 @@ var speakerController = function(Speaker){
 
 }
 
-module.exports = speakerController;
+module.exports = postController;
