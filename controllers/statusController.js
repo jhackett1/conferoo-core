@@ -1,6 +1,6 @@
 var statusController = function(Media, Post, Event, Speaker, User){
 
-  var get = function(req, res){
+  var get = function(req, res, next){
     let status = {};
 
     const promises = [
@@ -9,42 +9,42 @@ var statusController = function(Media, Post, Event, Speaker, User){
     Media.count().exec()
       .then((count)=>{
         status.media = count;
-        console.log(count)
+
       })
       .catch((err)=>{
-        console.log(err)
+        next(err)
       }),
     Post.count().exec()
       .then((count)=>{
         status.posts = count;
-        console.log(count)
+
       })
       .catch((err)=>{
-        console.log(err)
+        next(err)
       }),
     Event.count().exec()
       .then((count)=>{
         status.events = count;
-        console.log(count)
+
       })
       .catch((err)=>{
-        console.log(err)
+        next(err)
       }),
     Speaker.count().exec()
       .then((count)=>{
         status.speakers = count;
-        console.log(count)
+
       })
       .catch((err)=>{
-        console.log(err)
+        next(err)
       }),
     User.count().exec()
       .then((count)=>{
         status.users = count;
-        console.log(count)
+
       })
       .catch((err)=>{
-        console.log(err)
+        next(err)
       })
     ];
     // Wait for all the above promises to resolve, then send the response
