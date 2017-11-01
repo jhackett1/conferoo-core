@@ -27,6 +27,7 @@ var speakers = require('./routes/speakers')(app);
 var posts = require('./routes/posts')(app);
 var auth = require('./routes/auth')(app);
 var media = require('./routes/media')(app);
+var status = require('./routes/status')(app);
 
 // Set view engine & dir
 app.set('views', path.join(__dirname, 'views'));
@@ -49,6 +50,7 @@ app.use('/api/speakers', speakers);
 app.use('/api/posts', posts);
 app.use('/api/authenticate', auth);
 app.use('/api/media', media);
+app.use('/api/status', status);
 
 // Error handling middleware
 app.use(function(err, req, res, next){
