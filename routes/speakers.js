@@ -10,17 +10,17 @@ var routes = function(app){
 
   router.route('/')
     //GET a list of all speakers
-    .get(speakerController.getList)
+    .get(authorise.basic, speakerController.getList)
     //POST a new user to the database
-    .post(speakerController.post)
+    .post(authorise.basic, speakerController.post)
 
   router.route('/:id')
     //GET a single speaker by ID
-    .get(speakerController.getSingle)
+    .get(authorise.basic, speakerController.getSingle)
     // DELETE a single speaker by ID
-    .delete(speakerController.deleteSingle)
+    .delete(authorise.basic, speakerController.deleteSingle)
     // PATCH/update a single speaker by ID
-    .patch(speakerController.patchSingle)
+    .patch(authorise.basic, speakerController.patchSingle)
 
   return router;
 }

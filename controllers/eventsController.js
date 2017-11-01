@@ -21,7 +21,7 @@ var eventController = function(Event){
       query.speaker = req.query.speaker;
     }
     // Make DB query
-    Event.find(query).sort({title: 1}).exec( function(err, events, next){
+    Event.find(query).sort({programme: 1, time: 1}).exec( function(err, events, next){
       if(err){return next(err)};
       // Sort the results by whichever query parameter is passed in
       if(req.query.sort){

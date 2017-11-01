@@ -27,7 +27,9 @@ var userController = function(User){
           _id: user._id,
           email: user.email,
           displayname: user.displayName,
-          detail: req.protocol + "://" + req.get('host') + req.originalUrl + "/" + user.id
+          image: user.image,
+          programme: user.programme,
+          admin: user.admin
         }
       }))
     })

@@ -10,17 +10,17 @@ var routes = function(app){
 
   router.route('/')
     //GET a list of all postss
-    .get(postsController.getList)
+    .get(authorise.basic, postsController.getList)
     //POST a new user to the database
-    .post(postsController.post)
+    .post(authorise.admin, postsController.post)
 
   router.route('/:id')
     //GET a single posts by ID
-    .get(postsController.getSingle)
+    .get(authorise.basic, postsController.getSingle)
     // DELETE a single posts by ID
-    .delete(postsController.deleteSingle)
+    .delete(authorise.admin, postsController.deleteSingle)
     // PATCH/update a single posts by ID
-    .patch(postsController.patchSingle)
+    .patch(authorise.admin, postsController.patchSingle)
 
   return router;
 }

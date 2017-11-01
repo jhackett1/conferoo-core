@@ -11,13 +11,13 @@ var routes = function(app){
   var mediaController = require('../controllers/mediaController')(Media);
 
   router.route('/')
-    .get(mediaController.get)
+    .get(authorise.basic, mediaController.get)
     //POST a new media upload to the database
-    .post(mediaController.post)
+    .post(authorise.basic, mediaController.post)
 
   router.route('/:id')
     // DELETE an upload by ID
-    .delete(mediaController.delete)
+    .delete(authorise.admin, mediaController.delete)
 
   return router;
 }

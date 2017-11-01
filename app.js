@@ -10,7 +10,6 @@ var promise = require('bluebird');
 var fileUpload = require('express-fileupload');
 var cors = require('cors')
 
-
 // Open database connection
 mongoose.Promise = promise;
 var mongoUrl = process.env.MONGODB_URI || 'mongodb://localhost:27017/conferoo';
@@ -53,12 +52,11 @@ app.use('/api/media', media);
 
 // Error handling middleware
 app.use(function(err, req, res, next){
-  console.log("ERROR HANDLER TRIGGERED ==============")
-  // Log error internally
-  console.log(err);
+
+  console.log("======ERRORRRRRRRRRRRRRRRR============", err, "======ERRORRRRRRRRRRRRRRRR============")
+
   // Send the error to the user
   res.status(err.statusCode || 500).json({
-
     "success": false,
     "message": err.message
   });
