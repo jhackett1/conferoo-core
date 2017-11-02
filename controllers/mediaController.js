@@ -41,7 +41,7 @@ var mediaController = function(Media){
     // Build a filename for the upload, based on the date
     let now = new Date();
     let filename = buildFilename(upload.name);
-    let path = `./app/public/uploads/${filename}`;
+    let path = `/public/uploads/${filename}`;
     // Place the file on the server
     upload.mv(path, function(err) {
       if (err) return next(err);
