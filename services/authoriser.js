@@ -1,6 +1,8 @@
 // Protect API routes using these methods
 // This is authorisation, NOT user authentication
 
+// TODO: this looks terrible, refactor it
+
 var jwt = require('jwt-simple');
 
 

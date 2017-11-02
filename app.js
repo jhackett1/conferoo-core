@@ -54,9 +54,6 @@ app.use('/api/status', status);
 
 // Error handling middleware
 app.use(function(err, req, res, next){
-
-  console.log("======ERRORRRRRRRRRRRRRRRR============", err, "======ERRORRRRRRRRRRRRRRRR============")
-
   // Send the error to the user
   res.status(err.statusCode || 500).json({
     "success": false,
