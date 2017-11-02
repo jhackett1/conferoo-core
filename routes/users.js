@@ -13,6 +13,10 @@ var routes = function(app){
       // GET a list of all existing users
       .get(authorise.basic, userController.getList)
 
+  router.route('/me')
+      // Get the currently logged in user
+      .get(authorise.basic, userController.getMe)
+
   router.route('/:id')
       // GET a list of one existing user
       .get(authorise.basic, userController.getSingle)

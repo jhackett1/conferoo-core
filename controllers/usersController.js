@@ -1,3 +1,5 @@
+var jwt = require('jwt-simple');
+
 var userController = function(User){
 
   // LIST EXISTING USERS
@@ -35,6 +37,20 @@ var userController = function(User){
     })
   }
 
+  var getMe = function(req, res, next){
+    // Take the token passed by the user and decode it to pull out the supplied user ID
+    var token = req.headers.authorization.split(' ')[1];
+    var payload = jwt.decode(token, process.env.JWT_SECRET, function(err){
+      if(err) return res.status(401).json({message: "You are not authorised to access this resource."})
+    });
+    var userId = payload.sub;
+    // Search for and return the user with the specified ID
+    User.findById(userId, function(err, user){
+      if(err){return next(err)};
+      res.send(user);
+    })
+  }
+
   var getSingle = function(req, res, next){
     User.findById(req.params.id, function(err, user){
       if(err){return next(err)};
@@ -65,6 +81,7 @@ var userController = function(User){
   // Expose methods
   return {
     getList: getList,
+    getMe: getMe,
     getSingle: getSingle,
     patchSingle: patchSingle
   }
