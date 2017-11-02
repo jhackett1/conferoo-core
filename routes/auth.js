@@ -10,9 +10,7 @@ var routes = function(app){
   router.route('/')
     // LOG IN EXISTING USER
     // POST new user to the database
-    .post(authController.authenticate)
-
-
+    .post(authController.authenticate);
   return router;
 }
 

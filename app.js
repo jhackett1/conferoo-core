@@ -44,7 +44,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(fileUpload());
 
 // Enable preflight CORS support for custom requests
-app.options('*', cors())
+app.options('*', cors());
 
 // Bind routers to URL paths
 app.use('/api/users', users);
