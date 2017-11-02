@@ -43,6 +43,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Set up the file upload middleware and limit uploads to 1 MB
 app.use(fileUpload());
 
+// Enable preflight CORS support for custom requests
+app.options('*', cors())
+
 // Bind routers to URL paths
 app.use('/api/users', users);
 app.use('/api/events', events);
