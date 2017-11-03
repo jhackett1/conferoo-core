@@ -14,8 +14,10 @@ var pollModel = new Schema({
   },
   // Creation time
   createdAt: {type: String, required: true},
+  // Array of tags/themes
+  themes: {type: Array, required: true},
   // Is the poll accepting responses?
-  published: {type: String, default: false},
+  published: {type: String, required: ['private', 'active', 'inactive']},
   // Possible responses in an array
   options: {type: Array, default: null},
   // Collate actual responses
