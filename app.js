@@ -23,6 +23,7 @@ var app = express();
 // Import routers, injecting app object where necessary
 var users = require('./routes/users')(app);
 var events = require('./routes/events')(app);
+var polls = require('./routes/polls')(app);
 var speakers = require('./routes/speakers')(app);
 var posts = require('./routes/posts')(app);
 var auth = require('./routes/auth')(app);
@@ -49,6 +50,7 @@ app.options('*', cors());
 // Bind routers to URL paths
 app.use('/api/users', users);
 app.use('/api/events', events);
+app.use('/api/polls', polls);
 app.use('/api/speakers', speakers);
 app.use('/api/posts', posts);
 app.use('/api/authenticate', auth);
