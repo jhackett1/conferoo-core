@@ -93,13 +93,22 @@ var mediaController = function(Media){
     Media.findById(req.params.id, function(err, media){
       if(err){return next(err)};
 
-      // Now delete DB record
-      media.remove(function(err){
-        if(err){return next(err)} else {
-          // Thanks user, we're done here
-          res.status(200).json({message: "Media deleted successfully."});
-        }
-      })
+      // Create an S3 object to handle uploads
+      var conferooBucket = new AWS.S3({params: {Bucket: process.env.S3_BUCKET_NAME}});
+
+      conferooBucket.deleteObject({
+        Key: media.title
+      }, function(err, data) {
+        if (err) return next(err);
+        // Now delete DB record
+        media.remove(function(err){
+          if(err){return next(err)} else {
+            // Thanks user, we're done here
+            res.status(200).json({message: "Media deleted successfully."});
+          }
+        })
+      });
+
     })
   }
 
