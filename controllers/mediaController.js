@@ -96,10 +96,9 @@ var mediaController = function(Media){
       // Now delete DB record
       media.remove(function(err){
         if(err){return next(err)} else {
-
-        // Thanks user, we're done here
-        res.status(200).json({message: "Media deleted successfully."});
-
+          // Thanks user, we're done here
+          res.status(200).json({message: "Media deleted successfully."});
+        }
       })
     })
   }
