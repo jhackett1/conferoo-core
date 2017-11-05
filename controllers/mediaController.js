@@ -39,9 +39,6 @@ var mediaController = function(Media){
 
   // Recieve file uploads, saving them on the server and making a database record
   var post = function(req, res, next){
-
-    console.log(req.file)
-
     // If there are no files, pass an error
     if (!req.file) return next(new Error("No files were attached."));
     // Get the file
@@ -49,13 +46,10 @@ var mediaController = function(Media){
     // Only allow specified filetypes
     var match = ['image/jpg','image/gif','image/jpeg','image/png'].includes(upload.mimetype);
     if (!match) return next(new Error("That file type is not supported."));
-
     // Build a filename for the upload, based on the date
     let filename = buildFilename(upload.originalname);
-
     // Create an S3 object to handle uploads
     var conferooBucket = new AWS.S3({params: {Bucket: process.env.S3_BUCKET_NAME}});
-
     // Initialise file upload
     conferooBucket.upload({
       ACL: 'public-read',
@@ -65,12 +59,14 @@ var mediaController = function(Media){
     },
     function (err, data) {
       if (err) return next(err);
+      console.log(data)
       // Add a record in the database
       var newMedia = new Media({
         sources: {
           full: data.Location,
           preview: data.Location
         },
+        s3Key: data.Key,
         title: upload.originalname,
         uploadedAt: new Date()
       });
@@ -92,12 +88,11 @@ var mediaController = function(Media){
   var deleteSingle = function(req, res, next){
     Media.findById(req.params.id, function(err, media){
       if(err){return next(err)};
-
       // Create an S3 object to handle uploads
       var conferooBucket = new AWS.S3({params: {Bucket: process.env.S3_BUCKET_NAME}});
-
+      // Delete from S3
       conferooBucket.deleteObject({
-        Key: media.title
+        Key: media.s3Key
       }, function(err, data) {
         if (err) return next(err);
         // Now delete DB record
@@ -108,7 +103,6 @@ var mediaController = function(Media){
           }
         })
       });
-
     })
   }
 
