@@ -54,7 +54,7 @@ var mediaController = function(Media){
     let filename = buildFilename(upload.originalname);
 
     // Create an S3 object to handle uploads
-    var conferooBucket = new AWS.S3({params: {Bucket: 'conferoo'}});
+    var conferooBucket = new AWS.S3({params: {Bucket: process.env.S3_BUCKET_NAME}});
 
     // Initialise file upload
     conferooBucket.upload({
