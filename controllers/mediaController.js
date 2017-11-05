@@ -68,7 +68,8 @@ var mediaController = function(Media){
       // Add a record in the database
       var newMedia = new Media({
         sources: {
-          full: data.Location
+          full: data.Location,
+          preview: data.Location
         },
         title: upload.originalname,
         uploadedAt: new Date()
@@ -91,22 +92,14 @@ var mediaController = function(Media){
   var deleteSingle = function(req, res, next){
     Media.findById(req.params.id, function(err, media){
       if(err){return next(err)};
-      // Get paths to delete files
-      var fullPath = "./public/uploads/" + media.sources.full.split("uploads/").pop();
-      var previewPath = "./public/uploads/previews/" + media.sources.full.split("uploads/").pop();
+
       // Now delete DB record
       media.remove(function(err){
         if(err){return next(err)} else {
-        // And delete the files too
-        fs.unlink(fullPath, function(err){
-          if(err){return next(err)}
-          fs.unlink(previewPath, function(err){
-            if(err){return next(err)}
-            // Thanks user, we're done here
-            res.status(200).json({message: "Media deleted successfully."});
-          })
-        })
-        }
+
+        // Thanks user, we're done here
+        res.status(200).json({message: "Media deleted successfully."});
+
       })
     })
   }
