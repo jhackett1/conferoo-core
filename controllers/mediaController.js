@@ -25,7 +25,7 @@ var mediaController = function(Media){
     var match = ['image/jpg','image/gif','image/jpeg','image/png'].includes(upload.mimetype);
     if (!match) return next(new Error("That file type is not supported."));
     // Build a filename for the upload, based on the date
-    let filename = buildFilename(upload.originalname);
+    let filename = upload.originalname;
     // Initialise file upload
     conferooBucket.upload({
       ACL: 'public-read',
