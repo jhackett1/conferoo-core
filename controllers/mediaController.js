@@ -65,11 +65,19 @@ var mediaController = function(Media){
     },
     function (err, data) {
       if (err) return next(err);
-      res.status(200).json({"Message": `File successfully uploaded to ${data.Location}`}).end();
+      // Add a record in the database
+      var newMedia = new Media({
+        sources: {
+          full: data.Location
+        },
+        title: upload.originalname,
+        uploadedAt: new Date()
+      });
+      newMedia.save(function(err, newMedia){
+        if(err){return next(err)};
+        res.status(201).json({message: newMedia}).end();
+      });
     })
-
-
-
   }
 
   var get = function(req, res, next){
