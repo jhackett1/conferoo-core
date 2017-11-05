@@ -2,14 +2,6 @@ var sharp = require('sharp');
 var fs = require('fs');
 const sortBy = require('sort-array');
 
-// Import AWS SDK for S3 uploads
-var AWS = require('aws-sdk');
-// Set AWS credentials from environment vars
-AWS.config.update({
-  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
-})
-
 var mediaController = function(Media){
 
   // Build filenames
@@ -39,37 +31,39 @@ var mediaController = function(Media){
 
   // Recieve file uploads, saving them on the server and making a database record
   var post = function(req, res, next){
-
-    console.log(req.file)
-
+    console.log('POST CONTROLLER TRIGGERED')
     // If there are no files, pass an error
-    if (!req.file) return next(new Error("No files were attached."));
+    if (!req.files) return next(new Error("No files were attached."));
     // Get the file
-    let upload = req.file;
+    let upload = req.files.upload;
     // Only allow specified filetypes
     var match = ['image/jpg','image/gif','image/jpeg','image/png'].includes(upload.mimetype);
     if (!match) return next(new Error("That file type is not supported."));
-
     // Build a filename for the upload, based on the date
-    let filename = buildFilename(upload.originalname);
-
-    // Create an S3 object to handle uploads
-    var conferooBucket = new AWS.S3({params: {Bucket: 'conferoo'}});
-
-    // Initialise file upload
-    conferooBucket.upload({
-      ACL: 'public-read',
-      Body: fs.createReadStream(upload.path),
-      Key: filename,
-      ContentType: 'application/octet-stream'
-    },
-    function (err, data) {
+    let now = new Date();
+    let filename = buildFilename(upload.name);
+    let path = `./public/uploads/${filename}`;
+    // Place the file on the server
+    upload.mv(path, function(err) {
       if (err) return next(err);
-      res.status(200).json({"Message": `File successfully uploaded to ${data.Location}`}).end();
-    })
-
-
-
+      // Create preview
+      buildPreview(filename, path, function(err, previewPath){
+        if (err) return next(new Error("Can't create preview. File not compatible."));
+        // Add a record in the database
+        var newMedia = new Media({
+          sources: {
+            full: req.protocol + "://" + req.get('host') + path.slice(8),
+            preview: req.protocol + "://" + req.get('host') + previewPath.slice(8)
+          },
+          title: upload.name,
+          uploadedAt: new Date()
+        });
+        newMedia.save(function(err, newMedia){
+          if(err){return next(err)};
+          res.status(201).json({message: newMedia});
+        });
+      });
+    });
   }
 
   var get = function(req, res, next){

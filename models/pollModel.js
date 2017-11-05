@@ -15,13 +15,13 @@ var pollModel = new Schema({
   // Creation time
   createdAt: {type: String, required: true},
   // Array of tags/themes
-  themes: {type: Array, required: true},
+  themes: {type: Array, default: null},
   // Is the poll accepting responses?
   published: {type: String, required: ['private', 'active', 'inactive']},
   // Possible responses in an array
   options: {type: Array, default: null},
   // Collate actual responses
-  responses: {type: Object, default: false}
+  responses: {type: Array, default: false}
 }, { versionKey: false });
 
 module.exports = mongoose.model('poll', pollModel);

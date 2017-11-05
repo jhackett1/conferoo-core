@@ -9,6 +9,7 @@ var mongoose = require('mongoose');
 var promise = require('bluebird');
 var fileUpload = require('express-fileupload');
 var cors = require('cors')
+var multer = require('multer');
 
 // Open database connection
 mongoose.Promise = promise;
@@ -36,13 +37,16 @@ app.set('view engine', 'ejs');
 
 // Middleware
 app.use(logger('dev'));
+// Set up the file upload middleware
+// app.use(fileUpload());
+
+app.use(multer({dest:path.join(__dirname, 'public/uploads')}).single('upload'));
+
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-// Set up the file upload middleware and limit uploads to 1 MB
-app.use(fileUpload());
 
 // Enable preflight CORS support for custom requests
 app.options('*', cors());
