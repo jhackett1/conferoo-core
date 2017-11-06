@@ -3,13 +3,12 @@ var mongoose = require('mongoose'),
 
 // Schema for each piece of media uploaded to the database
 var mediaModel = new Schema({
-  // Get from file
+  // Filename from original upload
   title: {type: String, required: true},
-  // Get from file
+  // Save the S3 URLs, constructed from the host URL in config and their Keys
   sources: {type: Object, required: true},
-  s3Key: {type: String},
-  // Get from now date object in controller
-  uploadedAt: {type: Object, required: true}
+  // From
+  uploadedAt: {type: Date, required: true}
 }, { versionKey: false });
 
 module.exports = mongoose.model('Media', mediaModel);

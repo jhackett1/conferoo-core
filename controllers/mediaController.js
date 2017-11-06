@@ -1,63 +1,82 @@
+var sharp = require('sharp');
 var fs = require('fs');
-const sortBy = require('sort-array');
-
-
-// Import AWS SDK for S3 uploads
-var AWS = require('aws-sdk');
-// Set AWS credentials from environment vars
-AWS.config.update({
-  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
-})
-// Create an S3 object to handle uploads
-var conferooBucket = new AWS.S3({params: {Bucket: process.env.S3_BUCKET_NAME}});
-
+var s3 = require('../services/s3');
 
 var mediaController = function(Media){
 
-  // Recieve file uploads, saving them on the server and making a database record
+  // Filename-building helper function
+  var buildFilename = function(rawFilename){
+    function pad(n){return n<10 ? '0'+n : n}
+    let now = new Date();
+    return  pad(now.getHours().toString()) +
+            pad(now.getMinutes().toString()) +
+            pad(now.getSeconds()) + "_" +
+            pad(now.getDate()) +
+            pad(now.getMonth()+1) +
+            pad(now.getFullYear()) + "_" +
+            rawFilename;
+  }
+
+  // Make a 150x150px preview copy of each image in a subfolder
+  var buildPreview = function(filename, originalImagePath, cb){
+    let previewPath = `./tmp/${filename}`;
+    sharp(originalImagePath).resize(150, 150).toFile(previewPath, function(err, info){
+      if(err){return cb(err, null);
+      } else {
+        cb(null, previewPath);
+      }
+    });
+  }
+
+  // Process uploads: perform validation, process previews, upload to S3 and make DB record
   var post = function(req, res, next){
-    // If there are no files, pass an error
-    if (!req.file) return next(new Error("No files were attached."));
     // Get the file
     let upload = req.file;
-    // Only allow specified filetypes
-    var match = ['image/jpg','image/gif','image/jpeg','image/png'].includes(upload.mimetype);
-    if (!match) return next(new Error("That file type is not supported."));
-    // Build a filename for the upload, based on the date
-    let filename = upload.originalname;
-    // Initialise file upload
-    conferooBucket.upload({
-      ACL: 'public-read',
-      Body: fs.createReadStream(upload.path),
-      Key: filename,
-      ContentType: 'application/octet-stream'
-    },
-    function (err, data) {
-      if (err) return next(err);
-      console.log(data)
-      // Add a record in the database
-      res.status(201).json({message: data}).end();
+    // Construct filename and path
+    let filename = buildFilename(upload.originalname);
+    let path = upload.path;
+    // Create object to represent new DB entry
+    let newMedia = new Media({
+      sources: {},
+      uploadedAt: new Date()
+    });
+    // Upload original file to S3...
+    s3.upload(path, filename, function(err, data){
+      if(err) return next(err);
+      newMedia.title = data.Key;
+      newMedia.sources.full = data.Location;
+      // Now build preview...
+      buildPreview(filename, path, function(err, previewPath){
+        if(err) return next(err);
+        // And upload the preview, too...
+        s3.upload(previewPath, 'preview_' + filename, function(err, data){
+          if(err) return next(err);
+          newMedia.sources.preview = data.Location;
+          // ...finally, save to DB
+          newMedia.save(function(err, newMedia){
+            if(err) return next(err);
+            // Did everything work? Send success message if so
+            res.status(201).json(newMedia);
+          })
+        })
+      })
     })
   }
 
+  // Return DB list
   var get = function(req, res, next){
-    conferooBucket.listObjects({}, function(err, data){
+    // Return a list from DB, sorted by most recent first
+    Media.find().sort({uploadedAt: -1}).exec( function(err, events, next){
       if(err){return next(err)};
       // Send the results
-      res.status(200).json(data.Contents);
+      res.status(200).json(events);
     })
   }
 
+  // Delete upload: delete original and preview from S3 and purge DB record
   var deleteSingle = function(req, res, next){
-    // Delete from S3
-    conferooBucket.deleteObject({
-      Key: req.params.id
-    }, function(err, data) {
-      if (err) return next(err);
-      // Thanks user, we're done here
-      res.status(200).json({message: "Media deleted successfully."});
-    });
+    // TODO: Code goes here
+
   }
 
   // Expose public methods

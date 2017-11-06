@@ -40,7 +40,7 @@ app.use(logger('dev'));
 // Set up the file upload middleware
 // app.use(fileUpload());
 
-app.use(multer({dest:path.join(__dirname, 'public/uploads')}).single('upload'));
+app.use(multer({dest:path.join(__dirname, 'tmp')}).single('upload'));
 
 app.use(cors());
 app.use(bodyParser.json());
