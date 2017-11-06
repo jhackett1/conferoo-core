@@ -1,3 +1,5 @@
+var fs = require('fs');
+
 // Configure S3 client
 var AWS = require('aws-sdk');
 AWS.config.update({
@@ -12,14 +14,14 @@ var s3 = {
   upload: function(file, key, cb){
     bucket.upload({
       ACL: 'public-read',
-      Body: file,
+      Body: fs.createReadStream(file),
       Key: key,
       ContentType: 'application/octet-stream'
     }, function(err, data){
       cb(err, data)
     });
   },
-  
+
   // List all keys
   list: function(cb){
     bucket.listObjects({}, function(err, data){
