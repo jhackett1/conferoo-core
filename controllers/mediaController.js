@@ -30,8 +30,13 @@ var mediaController = function(Media){
 
   // Process uploads: perform validation, process previews, upload to S3 and make DB record
   var post = function(req, res, next){
+    // Validate file is attached
+    if (!req.file) return next(new Error("No files were attached."));
     // Get the file
     let upload = req.file;
+    // Validate filetype
+    var match = ['image/jpg','image/gif','image/jpeg','image/png'].includes(upload.mimetype);
+    if (!match) return next(new Error("That file type is not supported."));
     // Construct filename and path
     let filename = buildFilename(upload.originalname);
     let path = upload.path;

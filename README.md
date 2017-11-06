@@ -29,7 +29,9 @@ Image uploads
 
 Conferoo is, partly, a content management system, accepting image uploads. All uploads must be authorised via a user token (not necessarily admin), and can be made as a multipart/form-data POST request to `POST /api/media`.
 
-Conferoo will save the upload to an Amazon S3 bucket, process a 150x150px preview image and save an entry to the database.
+Conferoo will process a 80x80px preview image, save both files to an Amazon S3 bucket (storing them temporarily in a `/tmp` folder), and record the locations in a database entry.
+
+It does not rely on local storage, making it suitable for serverless deployment via Heroku.
 
 Authentication
 -------------
