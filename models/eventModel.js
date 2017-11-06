@@ -8,6 +8,7 @@ var eventModel = new Schema({
   speaker: {type: String, default: null},
   // Stores URL string
   image: {type: String, default: null},
+  preview: {type: String, default: null},
   teaser: {type: String, required: true},
   content: {type: String, default: null},
   // Number of minutes

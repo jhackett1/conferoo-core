@@ -15,7 +15,8 @@ var postModel = new Schema({
   author: {type: String, default: null},
   // The URL of a featured image
   image: {type: String, required: true},
-  // Post visibility 
+  preview: {type: String, default: null},
+  // Post visibility
   published: {type: String, default: false}
 }, { versionKey: false });
 
