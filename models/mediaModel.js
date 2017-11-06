@@ -7,7 +7,7 @@ var mediaModel = new Schema({
   title: {type: String, required: true},
   // Save the S3 URLs, constructed from the host URL in config and their Keys
   sources: {type: Object, required: true},
-  // From
+  // From new Date() object in upload route
   uploadedAt: {type: Date, required: true}
 }, { versionKey: false });
 

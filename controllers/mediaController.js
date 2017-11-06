@@ -75,8 +75,25 @@ var mediaController = function(Media){
 
   // Delete upload: delete original and preview from S3 and purge DB record
   var deleteSingle = function(req, res, next){
-    // TODO: Code goes here
-
+    // Get DB entry...
+    Media.findById(req.params.id, function(err, media){
+      let fullKey = media.title;
+      let previewKey = "preview_" + media.title;
+      // ...delete full image...
+      s3.remove(fullKey, function(err, data){
+        if(err){return next(err)};
+        // ...delete preview image...
+        s3.remove(previewKey, function(err, data){
+          if(err){return next(err)};
+          // ..and finally, delete DB entry.
+          media.remove(function(err){
+            if(err){return next(err)};
+            // EVerything go okay? Tell the user
+            res.status(200).json({message: "Media deleted successfully."});
+          })
+        })
+      })
+    })
   }
 
   // Expose public methods
