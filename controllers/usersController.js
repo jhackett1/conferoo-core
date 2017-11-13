@@ -45,14 +45,14 @@ var userController = function(User){
     });
     var userId = payload.sub;
     // Search for and return the user with the specified ID
-    User.findById(userId, function(err, user){
+    User.findById(userId).lean().exec(function(err, user){
       if(err){return next(err)};
       res.send(user);
     })
   }
 
   var getSingle = function(req, res, next){
-    User.findById(req.params.id, function(err, user){
+    User.findById(req.params.id).lean().exec(function(err, user){
       if(err){return next(err)};
       res.json(user);
     })

@@ -17,10 +17,10 @@ var mediaController = function(Media){
             rawFilename;
   }
 
-  // Make a 150x150px preview copy of each image in a subfolder
-  var buildPreview = function(filename, originalImagePath, cb){
+  // Process a preview image of a given file to a given width and height
+  var buildPreview = function(width, height, filename, originalImagePath, cb){
     let previewPath = `./tmp/${filename}`;
-    sharp(originalImagePath).resize(150, 150).toFile(previewPath, function(err, info){
+    sharp(originalImagePath).resize(width, height).toFile(previewPath, function(err, info){
       if(err){return cb(err, null);
       } else {
         cb(null, previewPath);
@@ -51,18 +51,27 @@ var mediaController = function(Media){
       newMedia.title = data.Key;
       newMedia.sources.full = data.Location;
       // Now build preview...
-      buildPreview(filename, path, function(err, previewPath){
+      buildPreview(150, 150, filename, path, function(err, previewPath){
         if(err) return next(err);
         // And upload the preview, too...
         s3.upload(previewPath, 'preview_' + filename, function(err, data){
           if(err) return next(err);
           newMedia.sources.preview = data.Location;
-          // ...finally, save to DB
-          newMedia.save(function(err, newMedia){
-            if(err) return next(err);
-            // Did everything work? Send success message if so
-            res.status(201).json(newMedia);
-          })
+            // Move onto medium file size
+            buildPreview(1000, null, filename, path, function(err, previewPath){
+              if(err) return next(err);
+              // And upload the medium image, too
+              s3.upload(previewPath, 'medium_' + filename, function(err, data){
+                if(err) return next(err);
+                newMedia.sources.medium = data.Location;
+                // ...finally, save to DB
+                newMedia.save(function(err, newMedia){
+                  if(err) return next(err);
+                  // Did everything work? Send success message if so
+                  res.status(201).json(newMedia);
+                })
+              })
+            })
         })
       })
     })
@@ -71,7 +80,7 @@ var mediaController = function(Media){
   // Return DB list
   var get = function(req, res, next){
     // Return a list from DB, sorted by most recent first
-    Media.find().sort({uploadedAt: -1}).exec( function(err, events, next){
+    Media.find().sort({uploadedAt: -1}).lean().exec( function(err, events, next){
       if(err){return next(err)};
       // Send the results
       res.status(200).json(events);

@@ -11,6 +11,8 @@ var eventModel = new Schema({
   preview: {type: String, default: null},
   teaser: {type: String, required: true},
   content: {type: String, default: null},
+  // URL to speaker's slides
+  slides: {type: String, default: null},
   // Number of minutes
   duration: {type: Number, required: true},
   // Store time as string HHMM

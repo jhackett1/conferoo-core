@@ -1,12 +1,13 @@
 var express = require('express');
 // Import model
 var Event = require('../models/eventModel');
+var User = require('../models/userModel');
 var authorise = require('../services/authoriser.js');
 
 var routes = function(app){
 
   var router = express.Router();
-  var eventController = require('../controllers/eventsController')(Event);
+  var eventController = require('../controllers/eventsController')(Event, User);
 
   router.route('/')
     //GET a list of all events

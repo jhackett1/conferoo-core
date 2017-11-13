@@ -11,19 +11,29 @@ var postController = function(Post){
   }
 
   var getList = function(req, res){
-    // Blank query
-    var query = {};
-    // Make the list queryable by day, time and post
+
+    var query = {
+      // Take the supplied results per page int, or default to 5
+      perPage: (req.query.perPage) ? Number(req.query.perPage) : 5,
+      // Take the supplied offset, or default to 0
+      offset: (req.query.offset) ? Number(req.query.perPage) : 0
+    };
+
     // Make DB query
-    Post.find(query).sort({createdAt: -1}).exec( function(err, posts, next){
-      if(err){return next(err)};
-      // Send the results
-      res.status(200).json(posts);
-    })
+    Post.find()
+      .lean()
+      .sort({createdAt: -1})
+      .limit(query.perPage)
+      .skip(query.offset)
+      .exec( function(err, posts, next){
+        if(err){return next(err)};
+        // Send the results
+        res.status(200).json(posts);
+      })
   }
 
   var getSingle = function(req, res, next){
-    Post.findById(req.params.id, function(err, post){
+    Post.findById(req.params.id).lean().exec(function(err, post){
       if(err){return next(err)};
       res.json(post);
     })

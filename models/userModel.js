@@ -14,8 +14,8 @@ var userModel = new Schema({
   },
   // Which programme is this person attending? They can update this manually
   programme: { type: String, default: '0'},
-  // Keep track of the user's personal schedule for the conference in an object
-  schedule: {type: Object, default: null },
+  // Keep track of the events the user has expressed interest in
+  agenda: {type: Array, default: [] },
   // Bool keeping track of whether user has seen onboarding content
   onboarded: {type: Boolean, default: false }
 }, { versionKey: false });

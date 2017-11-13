@@ -10,9 +10,9 @@ var routes = function(app){
 
   router.route('/')
     //GET a list of all polls
-    .get(pollsController.getList)
+    .get(authorise.basic, pollsController.getList)
     //POST a new poll to the database
-    .post(pollsController.post)
+    .post(authorise.admin, pollsController.post)
 
   router.route('/:id')
     //GET a single poll by ID

@@ -15,7 +15,7 @@ var pollsController = function(Poll){
     var query = {};
     // Make the list queryable by day, time and poll
     // Make DB query
-    Poll.find(query).sort({createdAt: -1}).exec( function(err, polls, next){
+    Poll.find(query).sort({createdAt: -1}).lean().exec( function(err, polls, next){
       if(err){return next(err)};
       // Send the results
       res.status(200).json(polls);
@@ -23,7 +23,7 @@ var pollsController = function(Poll){
   }
 
   var getSingle = function(req, res, next){
-    Poll.findById(req.params.id, function(err, poll){
+    Poll.findById(req.params.id).lean().exec(function(err, poll){
       if(err){return next(err)};
       res.json(poll);
     })

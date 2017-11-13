@@ -30,6 +30,7 @@ var posts = require('./routes/posts')(app);
 var auth = require('./routes/auth')(app);
 var media = require('./routes/media')(app);
 var status = require('./routes/status')(app);
+var agenda = require('./routes/agenda')(app);
 
 // Set view engine & dir
 app.set('views', path.join(__dirname, 'views'));
@@ -52,6 +53,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.options('*', cors());
 
 // Bind routers to URL paths
+app.use('/api/agenda', agenda);
 app.use('/api/users', users);
 app.use('/api/events', events);
 app.use('/api/polls', polls);

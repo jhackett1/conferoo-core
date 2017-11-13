@@ -15,9 +15,8 @@ var speakerController = function(Speaker){
   var getList = function(req, res){
     // Blank query
     var query = {};
-    // Make the list queryable by day, time and speaker
     // Make DB query
-    Speaker.find(query).sort({name: 1}).exec( function(err, speakers, next){
+    Speaker.find(query).sort({name: 1}).lean().exec( function(err, speakers, next){
       if(err){return next(err)};
       // Send the results
       res.status(200).json(speakers);
@@ -25,7 +24,7 @@ var speakerController = function(Speaker){
   }
 
   var getSingle = function(req, res, next){
-    Speaker.findById(req.params.id, function(err, speaker){
+    Speaker.findById(req.params.id).lean().exec(function(err, speaker){
       if(err){return next(err)};
       res.json(speaker);
     })

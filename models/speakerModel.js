@@ -5,6 +5,7 @@ var mongoose = require('mongoose'),
 var speakerModel = new Schema({
   name: {type: String, required: true},
   biography: {type: String, default: null},
+  position: {type: String, default: null},
   // Stores URL string
   image: {type: String, default: null},
   preview: {type: String, default: null},
