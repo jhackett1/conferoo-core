@@ -49,7 +49,7 @@ var eventController = function(Event, User){
             event.attending = "false";
           }
           // Send response
-          res.json(event);
+          res.json(events);
         })
       })
   }
