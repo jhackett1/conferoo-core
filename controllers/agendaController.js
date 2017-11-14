@@ -17,8 +17,8 @@ var agendaController = function(User, Event){
         // Sort by programme first, then by time, then themes
         .sort({programme: 1, time: 1, themes: 1})
         .exec(function (err, events) {
-          console.log(events)
-          res.send(events)
+          if(err){return next(err)};
+          res.status(200).send(events)
         });
     })
   }
@@ -58,7 +58,7 @@ var agendaController = function(User, Event){
       // And save it
       user.save(function(err, updatedUser){
         if(err){return next(err)};
-        res.status(201).send(updatedUser);
+        res.status(200).send(updatedUser);
       });
     })
   }

@@ -33,8 +33,24 @@ var eventController = function(Event, User){
       .lean()
       .exec( function(err, events, next){
         if(err){return next(err)};
-        // Send the results
-        res.status(200).json(events);
+        // Decode a user ID from the supplied token
+        var token = req.headers.authorization.split(' ')[1];
+        var payload = jwt.decode(token, process.env.JWT_SECRET, function(err){
+          if(err) return next(err);
+        });
+        var userId = payload.sub;
+        // Search for and return the user with the specified ID
+        User.findById(userId).lean().exec(function(err, user){
+          if(err){return next(err)};
+          // Check whether user's agenda contains this event
+          if(user.agenda.includes(req.params.id)){
+            event.attending = "true";
+          } else {
+            event.attending = "false";
+          }
+          // Send response
+          res.json(event);
+        })
       })
   }
 
