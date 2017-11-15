@@ -32,6 +32,7 @@ var agendaController = function(User, Event){
     var userId = payload.sub;
     // Search for and return the user with the specified ID
     User.findById(userId, function(err, user){
+      console.log("FOUND USER", user)
       if(err){return next(err)};
       // Push the ID of the event into the user's agenda
       user.agenda.push(req.body.event);
