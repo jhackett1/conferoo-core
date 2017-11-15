@@ -50,9 +50,9 @@ var eventController = function(Event, User){
           for (var i = 0; i < events.length; i++) {
             // Check whether user's agenda contains this event
             if(user && user.agenda.includes(String(events[i]._id))){
-              events[i].attending = "true";
+              events[i].attending = true;
             } else {
-              events[i].attending = "false";
+              events[i].attending = false;
             }
           }
           // Send response
