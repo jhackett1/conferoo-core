@@ -32,15 +32,14 @@ var agendaController = function(User, Event){
     var userId = payload.sub;
     // Search for and return the user with the specified ID
     User.findById(userId, function(err, user){
-      console.log("FOUND USER", user)
       if(err){return next(err)};
-      // Push the ID of the event into the user's agenda
-      user.agenda.push(req.body.event);
-      // And save it
-      user.save(function(err, updatedUser){
-        if(err){return next(err)};
-        res.status(201).send(updatedUser);
-      });
+      Event.find({_id: user.agenda})
+        // Sort by programme first, then by time, then themes
+        .sort({programme: 1, time: 1, themes: 1})
+        .exec(function (err, events) {
+          if(err){return next(err)};
+          res.status(200).send(events)
+        });
     })
   }
 
@@ -54,13 +53,13 @@ var agendaController = function(User, Event){
     // Search for and return the user with the specified ID
     User.findById(userId, function(err, user){
       if(err){return next(err)};
-      // Push the ID of the event into the user's agenda
-      user.agenda.splice(req.body.event, 1);
-      // And save it
-      user.save(function(err, updatedUser){
-        if(err){return next(err)};
-        res.status(200).send(updatedUser);
-      });
+      Event.find({_id: user.agenda})
+        // Sort by programme first, then by time, then themes
+        .sort({programme: 1, time: 1, themes: 1})
+        .exec(function (err, events) {
+          if(err){return next(err)};
+          res.status(200).send(events)
+        });
     })
   }
 

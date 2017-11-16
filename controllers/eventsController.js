@@ -27,14 +27,12 @@ var eventController = function(Event, User){
     if (req.query.themes) {
       query.themes = req.query.themes;
     }
-                console.log('FIRING 1ST DB CALL')
     // Make DB query
     Event.find(query)
       // Sort by time
       .sort({time: 1})
       .lean()
       .exec( function(err, events, next){
-                        console.log('1ST DB CALL RETURNING')
         if(err){return next(err)};
         // Decode a user ID from the supplied token
         var token = req.headers.authorization.split(' ')[1];
@@ -42,11 +40,9 @@ var eventController = function(Event, User){
           if(err) return next(err);
         });
         var userId = payload.sub;
-            console.log('FIRING 2ND DB CALL')
         // Search for and return the user with the specified ID
         User.findById(userId).lean().exec(function(err, user){
           if(err){return next(err)};
-    console.log('2ST DB CALL RETURNING')
           for (var i = 0; i < events.length; i++) {
             // Check whether user's agenda contains this event
             if(user && user.agenda.includes(String(events[i]._id))){
