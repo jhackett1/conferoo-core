@@ -22,7 +22,7 @@ var postController = function(Page){
     // Make DB query
     Page.find()
       .lean()
-      .sort({createdAt: -1})
+      .sort({title: 1})
       .limit(query.perPage)
       .skip(query.offset)
       .exec( function(err, pages, next){
