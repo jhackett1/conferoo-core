@@ -16,10 +16,12 @@ var agendaController = function(User, Event){
       Event.find({_id: user.agenda})
         // Sort by programme first, then by time, then themes
         .sort({programme: 1, time: 1, themes: 1})
+        .lean()
         .exec(function (err, events) {
           if(err){return next(err)};
           for (var i = 0; i < events.length; i++) {
             events[i].attending = true;
+            console.log(events[i].attending);
           }
           res.status(200).send(events)
         });
@@ -43,6 +45,7 @@ var agendaController = function(User, Event){
         Event.find({_id: updatedUser.agenda})
           // Sort by programme first, then by time, then themes
           .sort({programme: 1, time: 1, themes: 1})
+          .lean()
           .exec(function (err, events) {
             if(err){return next(err)};
             for (var i = 0; i < events.length; i++) {
@@ -71,6 +74,7 @@ var agendaController = function(User, Event){
         Event.find({_id: updatedUser.agenda})
           // Sort by programme first, then by time, then themes
           .sort({programme: 1, time: 1, themes: 1})
+          .lean()
           .exec(function (err, events) {
             if(err){return next(err)};
             for (var i = 0; i < events.length; i++) {
