@@ -1,6 +1,5 @@
 var jwt = require('jwt-simple');
 
-
 var agendaController = function(User, Event){
 
   var list = function(req, res, next){
@@ -11,24 +10,13 @@ var agendaController = function(User, Event){
     });
     var userId = payload.sub;
     // Search for and return the user with the specified ID
-    User.findById(userId, function(err, user){
-      if(err){return next(err)};
-      Event.find({_id: user.agenda})
-        // Sort by programme first, then by time, then themes
-        .sort({programme: 1, time: 1, themes: 1})
-        .lean()
-        .exec(function (err, events) {
-          if(err){return next(err)};
-          for (var i = 0; i < events.length; i++) {
-            events[i].attending = true;
-            console.log(events[i].attending);
-          }
-          res.status(200).send(events)
-        });
+    User.findById(userId).lean().exec(function(err, user){
+      if(err) return next(err);
+      res.status(200).send(user.agenda)
     })
   }
 
-  var add = function(req, res, next){
+  var update = function(req, res, next){
     // Decode a user ID from the supplied token
     var token = req.headers.authorization.split(' ')[1];
     var payload = jwt.decode(token, process.env.JWT_SECRET, function(err){
@@ -36,61 +24,23 @@ var agendaController = function(User, Event){
     });
     var userId = payload.sub;
     // Search for and return the user with the specified ID
-    User.findById(userId, function(err, user){
-      if(err){return next(err)};
-      var updatedUser = user;
-      updatedUser.agenda.push(req.body.event)
+    User.findById(userId).exec(function(err, user){
+      if(err) return next(err);
+      // Replace the existing agenda with the one in the request body
+      user.agenda = req.body;
+      // And save back to the database
       user.save(function(err, updatedUser){
         if(err){return next(err)};
-        Event.find({_id: updatedUser.agenda})
-          // Sort by programme first, then by time, then themes
-          .sort({programme: 1, time: 1, themes: 1})
-          .lean()
-          .exec(function (err, events) {
-            if(err){return next(err)};
-            for (var i = 0; i < events.length; i++) {
-              events[i].attending = true;
-            }
-            res.status(200).send(events)
-          });
-      });
-    })
-  }
-
-  var remove = function(req, res, next){
-    // Decode a user ID from the supplied token
-    var token = req.headers.authorization.split(' ')[1];
-    var payload = jwt.decode(token, process.env.JWT_SECRET, function(err){
-      if(err) return next(err);
-    });
-    var userId = payload.sub;
-    // Search for and return the user with the specified ID
-    User.findById(userId, function(err, user){
-      if(err){return next(err)};
-      var updatedUser = user;
-      var index = updatedUser.agenda.indexOf(req.body.event)
-      updatedUser.agenda.splice(index, 1)
-      user.save(function(err, updatedUser){
-        Event.find({_id: updatedUser.agenda})
-          // Sort by programme first, then by time, then themes
-          .sort({programme: 1, time: 1, themes: 1})
-          .lean()
-          .exec(function (err, events) {
-            if(err){return next(err)};
-            for (var i = 0; i < events.length; i++) {
-              events[i].attending = true;
-            }
-            res.status(200).send(events)
-          });
+        res.status(200).send(updatedUser.agenda)
       })
+
     })
   }
 
   // Expose public methods
   return {
     list: list,
-    add: add,
-    remove: remove
+    update: update
   }
 }
 

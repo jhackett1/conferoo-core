@@ -12,9 +12,7 @@ var routes = function(app){
       // List the user's agenda
       .get(authorise.basic, agendaController.list)
       // Add a new event to the user's agenda
-      .post(authorise.basic, agendaController.add)
-      // Remove an event from the user's agenda
-      .delete(authorise.basic, agendaController.remove)
+      .put(authorise.basic, agendaController.update)
 
   return router;
 }
