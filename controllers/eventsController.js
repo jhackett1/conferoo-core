@@ -43,14 +43,6 @@ var eventController = function(Event, User){
         // Search for and return the user with the specified ID
         User.findById(userId).lean().exec(function(err, user){
           if(err){return next(err)};
-          for (var i = 0; i < events.length; i++) {
-            // Check whether user's agenda contains this event
-            if(user && user.agenda.includes(String(events[i]._id))){
-              events[i].attending = true;
-            } else {
-              events[i].attending = false;
-            }
-          }
           // Send response
           res.json(events);
         })
@@ -69,12 +61,6 @@ var eventController = function(Event, User){
       // Search for and return the user with the specified ID
       User.findById(userId).lean().exec(function(err, user){
         if(err){return next(err)};
-        // Check whether user's agenda contains this event
-        if(user && user.agenda.includes(req.params.id)){
-          event.attending = "true";
-        } else {
-          event.attending = "false";
-        }
         // Send response
         res.json(event);
       })
