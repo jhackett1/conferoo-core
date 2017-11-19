@@ -11,7 +11,6 @@ var eventController = function(Event, User){
   }
 
   var getList = function(req, res, next){
-        console.log('CONTROLLER METHOD HIT')
     // Blank query
     var query = {};
     // Make the list filterable by programme, speaker, theme and venue
@@ -34,36 +33,16 @@ var eventController = function(Event, User){
       .lean()
       .exec( function(err, events, next){
         if(err){return next(err)};
-        // Decode a user ID from the supplied token
-        var token = req.headers.authorization.split(' ')[1];
-        var payload = jwt.decode(token, process.env.JWT_SECRET, function(err){
-          if(err) return next(err);
-        });
-        var userId = payload.sub;
-        // Search for and return the user with the specified ID
-        User.findById(userId).lean().exec(function(err, user){
-          if(err){return next(err)};
-          // Send response
-          res.json(events);
-        })
+        // Send response
+        res.json(events);
       })
   }
 
   var getSingle = function(req, res, next){
     Event.findById(req.params.id).lean().exec(function(err, event){
       if(err){return next(err)};
-      // Decode a user ID from the supplied token
-      var token = req.headers.authorization.split(' ')[1];
-      var payload = jwt.decode(token, process.env.JWT_SECRET, function(err){
-        if(err) return next(err);
-      });
-      var userId = payload.sub;
-      // Search for and return the user with the specified ID
-      User.findById(userId).lean().exec(function(err, user){
-        if(err){return next(err)};
-        // Send response
-        res.json(event);
-      })
+      // Send response
+      res.json(event);
     })
   }
 
