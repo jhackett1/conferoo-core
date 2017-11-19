@@ -20,7 +20,7 @@ var authController = function(User){
     // Send the token to the client
     res.status(200).json({
       _id: user._id,
-      displayname: user.displayName,
+      displayName: user.displayName,
       email: user.email,
       image: user.image,
       token: token,
