@@ -24,7 +24,8 @@ var authController = function(User){
       email: user.email,
       image: user.image,
       token: token,
-      onboarded: user.onboarded
+      onboarded: user.onboarded,
+      programme: user.programme
     })
   }
 

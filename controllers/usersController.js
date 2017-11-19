@@ -30,8 +30,8 @@ var userController = function(User){
           email: user.email,
           displayname: user.displayName,
           image: user.image,
-          programme: user.programme,
-          admin: user.admin
+ 
+          admin: user.admin,
         }
       }))
     })
