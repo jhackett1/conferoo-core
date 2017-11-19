@@ -23,7 +23,8 @@ var authController = function(User){
       displayname: user.displayName,
       email: user.email,
       image: user.image,
-      token: token
+      token: token,
+      onboarded: user.onboarded
     })
   }
 
@@ -74,7 +75,7 @@ var authController = function(User){
             }
 
             // Check that the user is authenticating from the correct G Suite org or a subdomain
-            var whitelistedDomain = "faststream.civilservice.gov.uk";
+            // var whitelistedDomain = "faststream.civilservice.gov.uk";
             // if(!profile.domain || !profile.domain.endsWith(whitelistedDomain)){
             //   return res.status(401).json({message: `You must sign in with a @${whitelistedDomain} account`})
             // }
