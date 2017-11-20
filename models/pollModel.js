@@ -19,7 +19,7 @@ var pollModel = new Schema({
   // Is the poll accepting responses?
   published: {type: String, required: ['private', 'active', 'inactive']},
   // Possible responses in an array
-  options: {type: Array, default: null},
+  options: {type: Object, default: null},
   // Collate actual responses
   responses: {type: Array, default: false}
 }, { versionKey: false });
