@@ -9,6 +9,7 @@ var eventModel = new Schema({
   // Stores URL string
   image: {type: String, default: null},
   preview: {type: String, default: null},
+  medium: {type: String, default: null},
   teaser: {type: String, required: true},
   content: {type: String, default: null},
   // URL to speaker's slides

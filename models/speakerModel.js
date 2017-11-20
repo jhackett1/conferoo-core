@@ -9,6 +9,7 @@ var speakerModel = new Schema({
   // Stores URL string
   image: {type: String, default: null},
   preview: {type: String, default: null},
+  medium: {type: String, default: null},
 }, { versionKey: false });
 
 module.exports = mongoose.model('Speaker', speakerModel);
