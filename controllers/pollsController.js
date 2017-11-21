@@ -6,14 +6,16 @@ var pollsController = function(Poll){
     Poll.findById(req.params.id, function(err, poll){
       if(err){return next(err)};
 
-      console.log(req.responses)
+      let updatedPoll = poll;
+
+      console.log(poll.responses)
       console.log(req.body)
 
       // Update the right part of the document
-      poll.responses[req.body.response.option].push(req.body.response.user);
+      updatedPoll.responses[req.body.response.option].push(req.body.response.email);
       poll.markModified('responses');
       //Save the document
-      poll.save(function(err, poll){
+      poll.save(function(err, updatedPoll){
         if(err){return next(err)};
         res.status(201).send(poll);
       });
