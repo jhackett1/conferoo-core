@@ -2,6 +2,20 @@ const sortBy = require('sort-array');
 
 var pollsController = function(Poll){
 
+  var respond = function(req, res, next){
+    Poll.findById(req.params.id, function(err, poll){
+      if(err){return next(err)};
+      // Push the body response into the poll
+      var updatedPoll = poll.responses.push(req.body.response);
+      //Save the document
+      poll.save(function(err, updatedPoll){
+        if(err){return next(err)};
+        res.status(201).send(updatedPoll);
+      });
+    })
+  }
+
+
   var post = function(req, res, next){
     var newPoll = new Poll(req.body);
     newPoll.save(function(err, newPoll){
@@ -54,6 +68,7 @@ var pollsController = function(Poll){
 
   // Expose public methods
   return {
+    respond: respond,
     post: post,
     getList: getList,
     getSingle: getSingle,

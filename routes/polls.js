@@ -22,6 +22,10 @@ var routes = function(app){
     // PATCH/update a single poll by ID
     .patch(authorise.admin, pollsController.patchSingle)
 
+  router.route('/:id/respond')
+    //GET a single poll by ID
+    .post(authorise.basic, pollsController.respond)
+
   return router;
 }
 
