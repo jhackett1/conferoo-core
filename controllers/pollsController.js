@@ -5,8 +5,14 @@ var pollsController = function(Poll){
   var respond = function(req, res, next){
     Poll.findById(req.params.id, function(err, poll){
       if(err){return next(err)};
-      // Push the body response into the poll
-      var updatedPoll = poll.responses.push(req.body.response);
+
+
+
+      // Push a user's email into the response
+      var updatedPoll = poll.responses[req.body.response.option].push(req.body.response.user);
+
+
+      // var updatedPoll = poll.responses.push(req.body.response);
       //Save the document
       poll.save(function(err, updatedPoll){
         if(err){return next(err)};
