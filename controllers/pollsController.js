@@ -5,18 +5,13 @@ var pollsController = function(Poll){
   var respond = function(req, res, next){
     Poll.findById(req.params.id, function(err, poll){
       if(err){return next(err)};
-
-
-
-      // Push a user's email into the response
-      var updatedPoll = poll.responses[req.body.response.option].push(req.body.response.user);
-
-
-      // var updatedPoll = poll.responses.push(req.body.response);
+      // Update the right part of the document
+      poll.responses[req.body.response.option].push(req.body.response.user);
+      poll.markModified('responses');
       //Save the document
-      poll.save(function(err, updatedPoll){
+      poll.save(function(err, poll){
         if(err){return next(err)};
-        res.status(201).send(updatedPoll);
+        res.status(201).send(poll);
       });
     })
   }
