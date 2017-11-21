@@ -5,6 +5,10 @@ var pollsController = function(Poll){
   var respond = function(req, res, next){
     Poll.findById(req.params.id, function(err, poll){
       if(err){return next(err)};
+
+      console.log(req.responses)
+      console.log(req.body)
+
       // Update the right part of the document
       poll.responses[req.body.response.option].push(req.body.response.user);
       poll.markModified('responses');
