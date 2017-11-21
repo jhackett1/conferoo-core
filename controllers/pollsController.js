@@ -5,14 +5,11 @@ var pollsController = function(Poll){
   var respond = function(req, res, next){
     Poll.findById(req.params.id, function(err, poll){
       if(err){return next(err)};
-
       let updatedPoll = poll;
-
-      console.log(poll.responses)
-      console.log(req.body)
-
       // Update the right part of the document
-      updatedPoll.responses[req.body.response.option].push(req.body.response.email);
+      if(updatedPoll.responses[req.body.response.option]){
+              updatedPoll.responses[req.body.response.option].push(req.body.response.email);
+      }
       poll.markModified('responses');
       //Save the document
       poll.save(function(err, updatedPoll){
