@@ -39,5 +39,7 @@
     margin: 0px auto 20px auto; }
   section#app a.btn, section#cta a.btn {
     margin: 0px auto 20px auto; }
+  section#app iframe, section#cta iframe {
+    height: 520px; }
   h3, p {
     text-align: center; } }

@@ -9,7 +9,8 @@ h1, h2, h3, h4, h5, a, p {
   color: #333; }
 
 a {
-  text-decoration: none; }
+  text-decoration: none;
+  cursor: pointer; }
   a:hover {
     text-decoration: underline; }
 
@@ -122,6 +123,8 @@ section#cta {
   section#cta a.btn {
     border-color: #ffffff;
     color: #ffffff; }
+  section#cta iframe {
+    height: 700px; }
 
 footer {
   background-color: #333;
