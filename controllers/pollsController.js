@@ -9,8 +9,10 @@ var pollsController = function(Poll){
       // Are we dealing with an open or multiple choice poll
       if (poll.type === 'open') {
         // For open
-        if (req.body.response.message) {
-          updatedPoll.openResponses.push(req.body.response.message);
+        if (req.body.response) {
+          if (req.body.response.message) {
+            updatedPoll.openResponses.push(req.body.response.message);
+          }
         }
       } else {
         // For multiple choice
