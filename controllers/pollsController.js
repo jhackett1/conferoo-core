@@ -10,8 +10,8 @@ var pollsController = function(Poll){
       if (poll.type === 'open') {
         // For open
         if (req.body.response) {
-          if (req.body.response.message) {
-            updatedPoll.openResponses.push(req.body.response.message);
+          if (req.body.response) {
+            updatedPoll.openResponses.push(req.body.response);
           }
         }
       } else {
