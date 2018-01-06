@@ -22,7 +22,7 @@ var pollModel = new Schema({
   options: {type: Object, default: null},
   // Collate actual responses
   responses: {type: Object, default: null},
-  openResponses: {type: Aray, default: null}
+  openResponses: {type: Array, default: null}
 }, { versionKey: false });
 
 module.exports = mongoose.model('poll', pollModel);
