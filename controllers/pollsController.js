@@ -6,9 +6,15 @@ var pollsController = function(Poll){
     Poll.findById(req.params.id, function(err, poll){
       if(err){return next(err)};
       let updatedPoll = poll;
-      // Update the right part of the document
-      if(updatedPoll.responses[req.body.response.option]){
-              updatedPoll.responses[req.body.response.option].push(req.body.response.email);
+      // Are we dealing with an open or multiple choice poll
+      if (poll.type === 'open') {
+        // For open
+        updatedPoll.openResponses.push(req.body.response.email);
+      } else {
+        // For multiple choice
+        if(updatedPoll.responses[req.body.response.option]){
+          updatedPoll.responses[req.body.response.option].push(req.body.response.email);
+        }
       }
       poll.markModified('responses');
       //Save the document
