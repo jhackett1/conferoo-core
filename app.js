@@ -1,3 +1,5 @@
+// Import New Relic APM
+require('newrelic');
 
 var express = require('express');
 var path = require('path');
