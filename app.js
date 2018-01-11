@@ -27,7 +27,7 @@ var db = mongoose.connect(mongoUrl, {
 var app = express();
 
 // For Sentry.io
-Raven.config('https://88a5c5592dec4cd89455028b73c09bdb:02da6693daee4d26b4442034c6a448f6@sentry.io/270020').install(function (err, initialErr, eventId) {
+Raven.config(process.env.SENTRY_DSN).install(function (err, initialErr, eventId) {
   console.error(err);
   process.exit(1);
 });
