@@ -13,6 +13,9 @@ var fileUpload = require('express-fileupload');
 var cors = require('cors')
 var multer = require('multer');
 
+// Get Sentry.io SDK
+var Raven = require('raven');
+
 // Open database connection
 mongoose.Promise = promise;
 var mongoUrl = process.env.MONGODB_URI || 'mongodb://localhost:27017/conferoo';
@@ -22,6 +25,13 @@ var db = mongoose.connect(mongoUrl, {
 
 // Get express app
 var app = express();
+
+// For Sentry.io
+Raven.config('https://88a5c5592dec4cd89455028b73c09bdb:02da6693daee4d26b4442034c6a448f6@sentry.io/270020').install(function (err, initialErr, eventId) {
+  console.error(err);
+  process.exit(1);
+});
+app.use(Raven.requestHandler());
 
 // Import routers, injecting app object where necessary
 var users = require('./routes/users')(app);
@@ -41,9 +51,8 @@ app.set('view engine', 'ejs');
 
 // Middleware
 app.use(logger('dev'));
-// Set up the file upload middleware
-// app.use(fileUpload());
 
+// Set up the file upload middleware
 app.use(multer({dest:path.join(__dirname, 'tmp')}).single('upload'));
 
 app.use(cors());
@@ -68,6 +77,8 @@ app.use('/api/media', media);
 app.use('/api/status', status);
 
 // Error handling middleware
+app.use(Raven.errorHandler());
+
 app.use(function(err, req, res, next){
   // Send the error to the user
   res.status(err.statusCode || 500).json({
