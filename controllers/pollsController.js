@@ -17,6 +17,10 @@ var pollsController = function(Poll){
       } else {
         // For multiple choice
         if(updatedPoll.responses[req.body.response.option]){
+
+          console.log("Responses object: ", typeof(updatedPoll.responses.a))
+          // console.log("2: ", req.body.response.option)
+
           updatedPoll.responses[req.body.response.option].push(req.body.response.email);
         }
       }
