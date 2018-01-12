@@ -20,6 +20,9 @@ var userController = function(User){
     if (req.query.displayName) {
       query.displayName = req.query.displayName;
     }
+    if (req.query.programme) {
+      query.programme = req.query.programme;
+    }
     // Search the DB
     User.find(query, function(err, users){
       if(err){return next(err)};
@@ -30,7 +33,7 @@ var userController = function(User){
           email: user.email,
           displayname: user.displayName,
           image: user.image,
- 
+
           admin: user.admin,
         }
       }))
