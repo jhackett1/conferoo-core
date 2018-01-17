@@ -10,7 +10,7 @@ var routes = function(app){
 
   router.route('/')
     //GET a list of all postss
-    .get(authorise.basic, postsController.getList)
+    .get(postsController.getList)
     //POST a new user to the database
     .post(authorise.admin, postsController.post)
 

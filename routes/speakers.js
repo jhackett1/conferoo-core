@@ -10,7 +10,7 @@ var routes = function(app){
 
   router.route('/')
     //GET a list of all speakers
-    .get(authorise.basic, speakerController.getList)
+    .get(speakerController.getList)
     //POST a new user to the database
     .post(authorise.admin, speakerController.post)
 
