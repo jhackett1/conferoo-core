@@ -1,34 +1,40 @@
+/* line 6, src/style.sass */
 * {
   margin: 0;
   padding: 0;
   -webkit-box-sizing: border-box;
   box-sizing: border-box; }
 
+/* line 12, src/style.sass */
 h1, h2, h3, h4, h5, a, p {
   font-family: Avenir, "Lato", Helvetica, sans serif;
   color: #333; }
 
+/* line 16, src/style.sass */
 a {
   text-decoration: none;
   cursor: pointer; }
+  /* line 19, src/style.sass */
   a:hover {
     text-decoration: underline; }
+  /* line 21, src/style.sass */
+  a.btn {
+    border: 2px solid #4a6bf6;
+    color: #4a6bf6;
+    display: inline-block;
+    width: 200px;
+    text-decoration: none;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    margin: 20px 0px; }
+    /* line 31, src/style.sass */
+    a.btn.disabled {
+      pointer-events: none !important;
+      -webkit-filter: brightness(0.8) grayscale(0.8);
+      filter: brightness(0.8) grayscale(0.8); }
 
-a.btn {
-  border: 2px solid #4a6bf6;
-  color: #4a6bf6;
-  display: inline-block;
-  width: 200px;
-  text-decoration: none;
-  padding: 10px;
-  border-radius: 5px;
-  text-align: center;
-  margin: 20px 0px; }
-  a.btn.disabled {
-    pointer-events: none !important;
-    -webkit-filter: brightness(0.8) grayscale(0.8);
-    filter: brightness(0.8) grayscale(0.8); }
-
+/* line 36, src/style.sass */
 section {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -38,10 +44,12 @@ section {
   -ms-flex-direction: column;
   flex-direction: column;
   padding: 25px; }
+  /* line 45, src/style.sass */
   section h3 {
     font-size: 2em;
     margin-bottom: 10px; }
 
+/* line 49, src/style.sass */
 header {
   padding: 0px 25px;
   display: -webkit-box;
@@ -55,15 +63,19 @@ header {
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center; }
+  /* line 62, src/style.sass */
   header img {
     height: 40px;
     margin-right: 15px; }
+  /* line 65, src/style.sass */
   header a {
     font-family: Avenir, "Lato", Helvetica, sans serif;
     font-weight: 700; }
+    /* line 68, src/style.sass */
     header a span {
       color: #4a6bf6; }
 
+/* line 72, src/style.sass */
 section#hero {
   width: 100%;
   height: calc(100vh - 72px);
@@ -75,6 +87,7 @@ section#hero {
   -ms-flex-pack: end;
   justify-content: flex-end;
   position: relative; }
+  /* line 83, src/style.sass */
   section#hero::after {
     content: "";
     position: absolute;
@@ -84,6 +97,7 @@ section#hero {
     right: 0;
     background-color: rgba(0, 0, 0, 0.7);
     z-index: 1; }
+  /* line 92, src/style.sass */
   section#hero h1 {
     color: #ffffff;
     font-size: 2em;
@@ -91,45 +105,120 @@ section#hero {
     margin-bottom: 10px;
     position: relative;
     z-index: 2; }
+  /* line 99, src/style.sass */
   section#hero h2 {
     color: #ffffff;
     font-weight: 400;
     font-size: 1.2em;
     position: relative;
     z-index: 2; }
+  /* line 105, src/style.sass */
   section#hero a {
     position: relative;
     z-index: 2;
     background: #4a6bf6;
     color: #ffffff; }
 
+/* line 110, src/style.sass */
 section#about {
   padding: 60px 25px;
   background-color: #efefef; }
+  /* line 113, src/style.sass */
   section#about p {
     margin-bottom: 20px; }
 
+/* line 115, src/style.sass */
 section#app {
   padding: 60px 25px; }
+  /* line 117, src/style.sass */
   section#app img {
     width: 100%;
     margin: 60px auto -60px auto; }
 
-section#cta {
+/* line 120, src/style.sass */
+section#cta, section#speakers {
   padding: 60px 25px;
   background-color: #4a6bf6; }
-  section#cta h3, section#cta p {
+  /* line 123, src/style.sass */
+  section#cta h3, section#cta p, section#speakers h3, section#speakers p {
     color: #ffffff; }
-  section#cta a.btn {
+  /* line 125, src/style.sass */
+  section#cta a.btn, section#speakers a.btn {
     border-color: #ffffff;
     color: #ffffff; }
-  section#cta iframe {
+  /* line 128, src/style.sass */
+  section#cta iframe, section#speakers iframe {
     height: 700px; }
+  /* line 130, src/style.sass */
+  section#cta ul, section#speakers ul {
+    list-style-type: none;
+    margin-top: 40px; }
 
+@-webkit-keyframes spin {
+  from {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg); }
+  to {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg); } }
+
+@keyframes spin {
+  from {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg); }
+  to {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg); } }
+    /* line 138, src/style.sass */
+    section#cta ul i.fa-circle-o-notch, section#speakers ul i.fa-circle-o-notch {
+      -webkit-animation: 2s spin ease-in-out infinite;
+              animation: 2s spin ease-in-out infinite;
+      font-size: 4em;
+      color: rgba(255, 255, 255, 0.3); }
+    /* line 142, src/style.sass */
+    section#cta ul li, section#speakers ul li {
+      float: left;
+      width: calc(50% - 10px);
+      margin-right: 20px;
+      margin-bottom: 20px;
+      background-color: rgba(255, 255, 255, 0.1);
+      overflow: hidden;
+      border-radius: 1px; }
+      /* line 150, src/style.sass */
+      section#cta ul li:nth-of-type(even), section#speakers ul li:nth-of-type(even) {
+        margin-right: 0px; }
+      /* line 152, src/style.sass */
+      section#cta ul li div.portrait, section#speakers ul li div.portrait {
+        height: 0;
+        width: 100%;
+        padding-bottom: 100%;
+        background-color: #333;
+        background-position: center;
+        background-size: cover; }
+      /* line 159, src/style.sass */
+      section#cta ul li div.text, section#speakers ul li div.text {
+        padding: 10px; }
+        /* line 161, src/style.sass */
+        section#cta ul li div.text h4, section#speakers ul li div.text h4 {
+          font-size: 1.2em;
+          color: white; }
+        /* line 164, src/style.sass */
+        section#cta ul li div.text h5, section#speakers ul li div.text h5 {
+          color: #ffffff;
+          font-weight: 100;
+          font-size: 0.8em; }
+        /* line 168, src/style.sass */
+        section#cta ul li div.text p, section#speakers ul li div.text p {
+          margin-top: 10px;
+          font-size: 0.8em; }
+
+/* line 173, src/style.sass */
 footer {
   background-color: #333;
   padding: 25px; }
+  /* line 176, src/style.sass */
   footer p {
     color: #ffffff; }
+  /* line 178, src/style.sass */
   footer a {
     color: #4a6bf6; }

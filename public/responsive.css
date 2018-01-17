@@ -1,9 +1,11 @@
 @media screen and (min-width: 900px) {
+  /* line 2, src/responsive.sass */
   section#hero h1 {
     font-size: 3em;
     margin-bottom: 20px; } }
 
 @media screen and (min-width: 700px) {
+  /* line 7, src/responsive.sass */
   a.btn:hover {
     -webkit-filter: brightness(1.1);
     filter: brightness(1.1);
@@ -11,10 +13,12 @@
     transform: scale(1.03);
     -webkit-transition: 0.1s ease-in;
     transition: 0.1s ease-in; }
+  /* line 14, src/responsive.sass */
   header {
     -webkit-box-pack: center;
     -ms-flex-pack: center;
     justify-content: center; }
+  /* line 19, src/responsive.sass */
   section#hero {
     -webkit-box-pack: center;
     -ms-flex-pack: center;
@@ -23,23 +27,63 @@
     -webkit-box-align: center;
     -ms-flex-align: center;
     align-items: center; }
+    /* line 27, src/responsive.sass */
     section#hero h1 {
       max-width: 800px; }
+  /* line 29, src/responsive.sass */
   section#about article {
     -webkit-column-count: 2;
     column-count: 2;
     max-width: 800px;
     margin: 0px auto 20px auto; }
+    /* line 34, src/responsive.sass */
     section#about article p {
       text-align: left; }
+  /* line 36, src/responsive.sass */
   section#app img, section#cta img {
     max-width: 800px; }
+  /* line 38, src/responsive.sass */
   section#app p, section#cta p {
     max-width: 500px;
     margin: 0px auto 20px auto; }
+  /* line 41, src/responsive.sass */
   section#app a.btn, section#cta a.btn {
     margin: 0px auto 20px auto; }
+  /* line 43, src/responsive.sass */
   section#app iframe, section#cta iframe {
     height: 520px; }
+  /* line 46, src/responsive.sass */
+  section#speakers p {
+    max-width: 500px;
+    margin: 0px auto; }
+  /* line 49, src/responsive.sass */
+  section#speakers ul {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+            flex-direction: row;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-align: start;
+        -ms-flex-align: start;
+            align-items: flex-start;
+    max-width: 800px;
+    margin: 40px auto 0px auto; }
+    /* line 57, src/responsive.sass */
+    section#speakers ul li {
+      width: 25%;
+      margin-right: 20px;
+      text-align: center; }
+      /* line 61, src/responsive.sass */
+      section#speakers ul li:nth-of-type(even) {
+        margin-right: 20px; }
+      /* line 63, src/responsive.sass */
+      section#speakers ul li:last-of-type {
+        margin-right: none !important; }
+  /* line 65, src/responsive.sass */
   h3, p {
     text-align: center; } }
