@@ -67,15 +67,15 @@
 /* 0 */
 /***/ (function(module, exports) {
 
-document.querySelector('section#hero a').addEventListener('click', function (e) {
-  e.preventDefault();
-  document.querySelector('#about').scrollIntoView({
-    block: "start",
-    inline: "nearest",
-    behavior: 'smooth'
-  });
-}); // Function to grab random elements from array, without duplicates
-
+// document.querySelector('section#hero a').addEventListener('click', function(e){
+//   e.preventDefault();
+//   document.querySelector('#about').scrollIntoView({
+//     block: "start",
+//     inline: "nearest",
+//     behavior: 'smooth'
+//   });
+// });
+// Function to grab random elements from array, without duplicates
 function getRandom(arr, n) {
   var result = new Array(n),
       len = arr.length,
