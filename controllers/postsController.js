@@ -14,7 +14,7 @@ var postController = function(Post){
 
     var query = {
       // Take the supplied results per page int, or default to 5
-      perPage: (req.query.perPage) ? Number(req.query.perPage) : 5,
+      perPage: (req.query.perPage) ? Number(req.query.perPage) : 20,
       // Take the supplied offset, or default to 0
       offset: (req.query.offset) ? Number(req.query.perPage) : 0
     };
